@@ -1,14 +1,15 @@
-import { Instrument_Serif, Plus_Jakarta_Sans } from "next/font/google";
+import { Bricolage_Grotesque, Plus_Jakarta_Sans } from "next/font/google";
 
-// Elegant variable serif for headlines - editorial, sophisticated
-export const instrumentSerif = Instrument_Serif({
-  weight: "400",
+// Bricolage Grotesque - distinctive, modern geometric display font
+// Perfect for headlines with character that stands out from generic choices
+export const bricolageGrotesque = Bricolage_Grotesque({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-headline",
+  weight: ["400", "500", "600", "700", "800"],
 });
 
-// Plus Jakarta Sans - modern geometric sans, similar to Satoshi
+// Plus Jakarta Sans - modern geometric sans for body text
 // Excellent readability, professional without being generic
 export const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],

@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu } from "lucide-react";
+import { Menu, X, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
+  SheetClose,
 } from "@/components/ui/sheet";
 import { navigationLinks } from "@/data/navigation";
 import { cn } from "@/lib/utils";
@@ -32,44 +33,81 @@ export function MobileNav() {
           <Menu className="h-5 w-5" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-[300px] sm:w-[350px]">
-        <SheetHeader>
-          <SheetTitle className="font-headline text-left">
-            Next Horizon Leadership
+      <SheetContent
+        side="right"
+        className="w-[320px] sm:w-[380px] border-l-0 bg-background/95 backdrop-blur-xl"
+      >
+        <SheetHeader className="text-left">
+          <SheetTitle className="font-headline text-2xl font-bold">
+            <span className="text-gradient text-gradient-brand">
+              Next Horizon
+            </span>
+            <br />
+            Leadership
           </SheetTitle>
         </SheetHeader>
-        <nav className="mt-8 flex flex-col gap-4">
-          <AnimatePresence>
+
+        {/* Decorative gradient line */}
+        <div className="mt-6 mb-8 h-px w-full bg-gradient-to-r from-primary via-accent to-transparent" />
+
+        <nav className="flex flex-col gap-2">
+          <AnimatePresence mode="popLayout">
             {open &&
-              navigationLinks.map((link, index) => (
-                <motion.div
-                  key={link.href}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ delay: index * 0.1, duration: 0.3 }}
-                >
-                  <Link
-                    href={link.href}
-                    onClick={() => setOpen(false)}
-                    className={cn(
-                      "block py-3 px-4 rounded-lg text-lg font-medium transition-colors",
-                      pathname === link.href
-                        ? "bg-primary text-primary-foreground"
-                        : "hover:bg-muted",
-                      link.isPrimary &&
-                        pathname !== link.href &&
-                        "bg-primary text-primary-foreground hover:bg-primary/90"
-                    )}
+              navigationLinks.map((link, index) => {
+                const isActive = pathname === link.href;
+                return (
+                  <motion.div
+                    key={link.href}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{
+                      delay: index * 0.08,
+                      duration: 0.3,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
                   >
-                    {link.label}
-                  </Link>
-                </motion.div>
-              ))}
+                    <Link
+                      href={link.href}
+                      onClick={() => setOpen(false)}
+                      className={cn(
+                        "group flex items-center justify-between py-4 px-4 rounded-xl text-lg font-medium transition-all duration-200",
+                        isActive
+                          ? "bg-primary text-primary-foreground"
+                          : "hover:bg-muted",
+                        link.isPrimary &&
+                          !isActive &&
+                          "bg-gradient-to-r from-primary to-accent text-white hover:opacity-90"
+                      )}
+                    >
+                      <span>{link.label}</span>
+                      <ArrowRight
+                        className={cn(
+                          "h-4 w-4 opacity-0 -translate-x-2 transition-all duration-200",
+                          "group-hover:opacity-100 group-hover:translate-x-0",
+                          isActive && "opacity-100 translate-x-0"
+                        )}
+                      />
+                    </Link>
+                  </motion.div>
+                );
+              })}
           </AnimatePresence>
         </nav>
+
+        {/* Footer section */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="absolute bottom-8 left-6 right-6"
+        >
+          <div className="h-px w-full bg-border mb-6" />
+          <p className="text-sm text-muted-foreground">
+            Empowering forward-looking leaders.
+          </p>
+        </motion.div>
       </SheetContent>
     </Sheet>
   );
 }
-

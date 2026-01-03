@@ -3,6 +3,13 @@
 import { Crown, Search, Sparkles, GraduationCap } from "lucide-react";
 import { SectionHeading } from "./section-heading";
 import { StaggerChildren, StaggerItem } from "@/components/motion";
+import {
+  AnimatedCard,
+  AnimatedCardContent,
+  AnimatedCardIcon,
+  AnimatedCardTitle,
+  AnimatedCardDescription,
+} from "@/components/ui/animated-card";
 import { whyNHL } from "@/data/services";
 
 const iconMap = {
@@ -14,7 +21,13 @@ const iconMap = {
 
 export function PillarGrid() {
   return (
-    <section className="relative py-20 bg-gradient-to-b from-white via-slate-50/50 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900 overflow-hidden">
+    <section className="relative py-24 lg:py-32 overflow-hidden">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-white via-slate-50 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900" />
+
+      {/* Texture */}
+      <div className="absolute inset-0 texture-topo opacity-30" />
+
       {/* Ambient orbs */}
       <div className="ambient-orb orb-brand absolute -left-64 top-1/2 -translate-y-1/2 opacity-10" />
       <div className="ambient-orb orb-accent absolute -right-48 bottom-0 opacity-5" />
@@ -32,15 +45,19 @@ export function PillarGrid() {
             const Icon = iconMap[pillar.icon as keyof typeof iconMap];
             return (
               <StaggerItem key={pillar.title}>
-                <div className="group card-surface card-premium card-lift p-7 text-center h-full">
-                  <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/20 via-primary/10 to-transparent text-primary transition-transform duration-300 group-hover:scale-110">
-                    {Icon && <Icon className="h-7 w-7" />}
-                  </div>
-                  <h3 className="mb-2 text-lg font-semibold">{pillar.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {pillar.description}
-                  </p>
-                </div>
+                <AnimatedCard variant="glow" className="h-full text-center">
+                  <AnimatedCardContent className="flex flex-col items-center">
+                    <AnimatedCardIcon className="mx-auto h-16 w-16 rounded-2xl">
+                      {Icon && <Icon className="h-7 w-7" />}
+                    </AnimatedCardIcon>
+                    <AnimatedCardTitle className="text-lg">
+                      {pillar.title}
+                    </AnimatedCardTitle>
+                    <AnimatedCardDescription className="text-sm">
+                      {pillar.description}
+                    </AnimatedCardDescription>
+                  </AnimatedCardContent>
+                </AnimatedCard>
               </StaggerItem>
             );
           })}
@@ -49,4 +66,3 @@ export function PillarGrid() {
     </section>
   );
 }
-

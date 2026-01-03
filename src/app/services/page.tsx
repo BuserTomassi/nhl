@@ -3,6 +3,13 @@ import { Search, Sparkles, LayoutGrid, Users } from "lucide-react";
 import { Header, Footer } from "@/components/layout";
 import { PageHeader } from "@/components/marketing";
 import { StaggerChildren, StaggerItem } from "@/components/motion";
+import {
+  AnimatedCard,
+  AnimatedCardContent,
+  AnimatedCardIcon,
+  AnimatedCardTitle,
+  AnimatedCardDescription,
+} from "@/components/ui/animated-card";
 import { services } from "@/data/services";
 
 export const metadata: Metadata = {
@@ -28,25 +35,35 @@ export default function ServicesPage() {
           subtitle="Partnering with a curated network of world-class organizations to deliver results."
         />
 
-        <section className="section-light section-vignette section-divider relative py-12 sm:py-16">
+        <section className="relative py-16 sm:py-24 overflow-hidden">
+          {/* Background */}
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950" />
+
+          {/* Texture */}
           <div className="absolute inset-0 texture-topo opacity-50" />
+
+          {/* Vignette effect */}
+          <div className="absolute inset-0 section-vignette" />
+
           <div className="container relative z-10">
-            <StaggerChildren className="grid gap-6 md:grid-cols-2">
+            <StaggerChildren className="grid gap-6 lg:gap-8 md:grid-cols-2">
               {services.map((service) => {
                 const Icon = iconMap[service.icon as keyof typeof iconMap];
                 return (
                   <StaggerItem key={service.title}>
-                    <div className="card-surface card-premium card-lift p-8 h-full">
-                      <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 text-primary">
-                        {Icon && <Icon className="h-6 w-6" />}
-                      </div>
-                      <h3 className="mb-3 text-xl font-semibold">
-                        {service.title}
-                      </h3>
-                      <p className="text-muted-foreground leading-relaxed">
-                        {service.description}
-                      </p>
-                    </div>
+                    <AnimatedCard variant="glow" className="h-full">
+                      <AnimatedCardContent>
+                        <AnimatedCardIcon className="h-14 w-14 rounded-xl">
+                          {Icon && <Icon className="h-6 w-6" />}
+                        </AnimatedCardIcon>
+                        <AnimatedCardTitle className="text-xl">
+                          {service.title}
+                        </AnimatedCardTitle>
+                        <AnimatedCardDescription className="leading-relaxed">
+                          {service.description}
+                        </AnimatedCardDescription>
+                      </AnimatedCardContent>
+                    </AnimatedCard>
                   </StaggerItem>
                 );
               })}

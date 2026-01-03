@@ -5,4 +5,5 @@ export { PillarGrid } from "./pillar-grid";
 export { About } from "./about";
 export { PageHeader } from "./page-header";
 export { SectionHeading } from "./section-heading";
-
+export { StatsSection } from "./stats-section";
+export { TestimonialSection } from "./testimonial-section";

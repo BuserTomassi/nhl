@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { instrumentSerif, plusJakartaSans } from "@/lib/fonts";
+import { bricolageGrotesque, plusJakartaSans } from "@/lib/fonts";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
@@ -33,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${instrumentSerif.variable} ${plusJakartaSans.variable} antialiased`}
+        className={`${bricolageGrotesque.variable} ${plusJakartaSans.variable} antialiased`}
       >
         <ThemeProvider
           attribute="class"

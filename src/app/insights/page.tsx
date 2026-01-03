@@ -4,7 +4,6 @@ import {
   FileText,
   Download,
   MessageSquareQuote,
-  ArrowRight,
 } from "lucide-react";
 import { Header, Footer } from "@/components/layout";
 import { PageHeader, SectionHeading } from "@/components/marketing";
@@ -74,9 +73,9 @@ export default function InsightsPage() {
                 Join Silver to receive monthly briefings plus early access to
                 Gold programming.
               </p>
-              <Button asChild size="lg">
-                <Link href="/contact">Subscribe to Silver</Link>
-              </Button>
+              <Link href="/contact">
+                <Button size="lg">Subscribe to Silver</Button>
+              </Link>
             </FadeIn>
           </div>
         </section>
@@ -137,12 +136,9 @@ export default function InsightsPage() {
 
             <FadeIn delay={0.3}>
               <div className="mt-8 text-center">
-                <Button variant="outline" asChild>
-                  <Link href="/events">
-                    Explore upcoming events
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
+                <Link href="/events">
+                  <Button variant="outline">Explore upcoming events</Button>
+                </Link>
               </div>
             </FadeIn>
           </div>
@@ -191,12 +187,14 @@ export default function InsightsPage() {
 
             <FadeIn delay={0.2}>
               <div className="flex flex-wrap justify-center gap-4">
-                <Button asChild size="lg">
-                  <Link href="/contact">Request Diamond invite</Link>
-                </Button>
-                <Button variant="outline" asChild size="lg">
-                  <Link href="/community">Join Gold for full library</Link>
-                </Button>
+                <Link href="/contact">
+                  <Button size="lg">Request Diamond invite</Button>
+                </Link>
+                <Link href="/community">
+                  <Button variant="outline" size="lg">
+                    Join Gold for full library
+                  </Button>
+                </Link>
               </div>
             </FadeIn>
           </div>
@@ -220,4 +218,3 @@ export default function InsightsPage() {
     </div>
   );
 }
-

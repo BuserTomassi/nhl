@@ -5,6 +5,8 @@ import {
   FeatureGrid,
   PillarGrid,
   About,
+  StatsSection,
+  // TestimonialSection, // TODO: Uncomment when testimonials are ready
 } from "@/components/marketing";
 
 export default function HomePage() {
@@ -15,7 +17,9 @@ export default function HomePage() {
         <Hero />
         <LogoMarquee />
         <FeatureGrid />
+        <StatsSection />
         <PillarGrid />
+        {/* <TestimonialSection /> */}
         <About />
       </main>
       <Footer />

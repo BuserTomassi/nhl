@@ -4,12 +4,13 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { Loader2, CheckCircle, AlertCircle } from "lucide-react";
+import { Loader2, CheckCircle, AlertCircle, ArrowRight } from "lucide-react";
 
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/xykynnpq";
 
@@ -59,77 +60,143 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      {status === "success" && (
-        <div className="flex items-center gap-3 rounded-lg bg-green-50 dark:bg-green-900/20 px-4 py-3 text-green-800 dark:text-green-200">
-          <CheckCircle className="h-5 w-5 flex-shrink-0" />
-          <p>Thank you! Your message has been sent successfully.</p>
-        </div>
-      )}
+    <motion.form
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      onSubmit={handleSubmit(onSubmit)}
+      className="space-y-6"
+    >
+      <AnimatePresence mode="wait">
+        {status === "success" && (
+          <motion.div
+            key="success"
+            initial={{ opacity: 0, scale: 0.95, y: -10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="flex items-center gap-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 px-5 py-4 text-emerald-800 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800/30"
+          >
+            <CheckCircle className="h-5 w-5 flex-shrink-0" />
+            <p className="font-medium">Thank you! Your message has been sent successfully.</p>
+          </motion.div>
+        )}
 
-      {status === "error" && (
-        <div className="flex items-center gap-3 rounded-lg bg-red-50 dark:bg-red-900/20 px-4 py-3 text-red-800 dark:text-red-200">
-          <AlertCircle className="h-5 w-5 flex-shrink-0" />
-          <p>Sorry, something went wrong. Please try again.</p>
-        </div>
-      )}
+        {status === "error" && (
+          <motion.div
+            key="error"
+            initial={{ opacity: 0, scale: 0.95, y: -10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="flex items-center gap-3 rounded-xl bg-red-50 dark:bg-red-900/20 px-5 py-4 text-red-800 dark:text-red-200 border border-red-200 dark:border-red-800/30"
+          >
+            <AlertCircle className="h-5 w-5 flex-shrink-0" />
+            <p className="font-medium">Sorry, something went wrong. Please try again.</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div className="grid gap-6 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="name">Full Name</Label>
+          <Label htmlFor="name" className="text-sm font-medium">
+            Full Name
+          </Label>
           <Input
             id="name"
             placeholder="John Doe"
             {...register("name")}
-            className={cn(errors.name && "border-destructive")}
+            className={cn(
+              "h-12 rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200",
+              errors.name && "border-destructive focus:ring-destructive/20"
+            )}
           />
-          {errors.name && (
-            <p className="text-sm text-destructive">{errors.name.message}</p>
-          )}
+          <AnimatePresence>
+            {errors.name && (
+              <motion.p
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="text-sm text-destructive"
+              >
+                {errors.name.message}
+              </motion.p>
+            )}
+          </AnimatePresence>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email" className="text-sm font-medium">
+            Email
+          </Label>
           <Input
             id="email"
             type="email"
             placeholder="john@example.com"
             {...register("email")}
-            className={cn(errors.email && "border-destructive")}
+            className={cn(
+              "h-12 rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200",
+              errors.email && "border-destructive focus:ring-destructive/20"
+            )}
           />
-          {errors.email && (
-            <p className="text-sm text-destructive">{errors.email.message}</p>
-          )}
+          <AnimatePresence>
+            {errors.email && (
+              <motion.p
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="text-sm text-destructive"
+              >
+                {errors.email.message}
+              </motion.p>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="company">Company</Label>
+        <Label htmlFor="company" className="text-sm font-medium">
+          Company <span className="text-muted-foreground">(optional)</span>
+        </Label>
         <Input
           id="company"
-          placeholder="Your company (optional)"
+          placeholder="Your company"
           {...register("company")}
+          className="h-12 rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
         />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="message">How can we support you?</Label>
+        <Label htmlFor="message" className="text-sm font-medium">
+          How can we support you?
+        </Label>
         <Textarea
           id="message"
-          placeholder="Tell us about your needs..."
+          placeholder="Tell us about your leadership and talent needs..."
           rows={6}
           {...register("message")}
-          className={cn(errors.message && "border-destructive")}
+          className={cn(
+            "rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 resize-none",
+            errors.message && "border-destructive focus:ring-destructive/20"
+          )}
         />
-        {errors.message && (
-          <p className="text-sm text-destructive">{errors.message.message}</p>
-        )}
+        <AnimatePresence>
+          {errors.message && (
+            <motion.p
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="text-sm text-destructive"
+            >
+              {errors.message.message}
+            </motion.p>
+          )}
+        </AnimatePresence>
       </div>
 
       <Button
         type="submit"
+        variant="gradient"
         size="lg"
-        className="w-full sm:w-auto"
+        className="w-full sm:w-auto group"
         disabled={status === "submitting"}
       >
         {status === "submitting" ? (
@@ -138,10 +205,12 @@ export function ContactForm() {
             Sending...
           </>
         ) : (
-          "Send Message"
+          <>
+            Send Message
+            <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+          </>
         )}
       </Button>
-    </form>
+    </motion.form>
   );
 }
-

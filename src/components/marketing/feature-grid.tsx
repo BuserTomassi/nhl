@@ -3,6 +3,13 @@
 import { Users, Sparkles, LayoutGrid } from "lucide-react";
 import { SectionHeading } from "./section-heading";
 import { StaggerChildren, StaggerItem } from "@/components/motion";
+import {
+  AnimatedCard,
+  AnimatedCardContent,
+  AnimatedCardIcon,
+  AnimatedCardTitle,
+  AnimatedCardDescription,
+} from "@/components/ui/animated-card";
 import { whatWeDo } from "@/data/services";
 
 const iconMap = {
@@ -13,9 +20,16 @@ const iconMap = {
 
 export function FeatureGrid() {
   return (
-    <section className="relative section-light py-20 overflow-hidden">
+    <section className="relative py-24 lg:py-32 overflow-hidden">
+      {/* Background with subtle gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-50 via-white to-slate-50/50 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900" />
+
+      {/* Grid texture */}
+      <div className="absolute inset-0 texture-grid opacity-50" />
+
       {/* Ambient orbs */}
       <div className="ambient-orb orb-accent absolute -right-48 top-1/3 opacity-10" />
+      <div className="ambient-orb orb-brand absolute -left-64 bottom-0 opacity-5" />
 
       <div className="container relative z-10">
         <SectionHeading
@@ -30,15 +44,17 @@ export function FeatureGrid() {
             const Icon = iconMap[item.icon as keyof typeof iconMap];
             return (
               <StaggerItem key={item.title}>
-                <div className="card-surface card-premium card-lift p-8 h-full">
-                  <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 text-primary">
-                    {Icon && <Icon className="h-6 w-6" />}
-                  </div>
-                  <h3 className="mb-3 text-xl font-semibold">{item.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {item.description}
-                  </p>
-                </div>
+                <AnimatedCard variant="glow" className="h-full">
+                  <AnimatedCardContent>
+                    <AnimatedCardIcon>
+                      {Icon && <Icon className="h-6 w-6" />}
+                    </AnimatedCardIcon>
+                    <AnimatedCardTitle>{item.title}</AnimatedCardTitle>
+                    <AnimatedCardDescription>
+                      {item.description}
+                    </AnimatedCardDescription>
+                  </AnimatedCardContent>
+                </AnimatedCard>
               </StaggerItem>
             );
           })}
@@ -47,4 +63,3 @@ export function FeatureGrid() {
     </section>
   );
 }
-
