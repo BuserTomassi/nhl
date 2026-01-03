@@ -4,11 +4,23 @@ import { Header, Footer } from "@/components/layout";
 import { PageHeader, SectionHeading } from "@/components/marketing";
 import { ContactForm } from "@/components/forms";
 import { FadeIn } from "@/components/motion";
+import { ContactPageSchema, BreadcrumbSchema } from "@/components/seo";
+
+const BASE_URL = "https://www.nexthorizonleadership.com";
 
 export const metadata: Metadata = {
   title: "Contact",
   description:
     "Get in touch with Next Horizon Leadership. Tell us about your executive hire needs.",
+  alternates: {
+    canonical: `${BASE_URL}/contact`,
+  },
+  openGraph: {
+    title: "Contact | Next Horizon Leadership",
+    description:
+      "Get in touch with Next Horizon Leadership. Tell us about your executive hire needs.",
+    url: `${BASE_URL}/contact`,
+  },
 };
 
 const contactInfo = [
@@ -33,8 +45,15 @@ const contactInfo = [
 ];
 
 export default function ContactPage() {
+  const breadcrumbs = [
+    { name: "Home", url: BASE_URL },
+    { name: "Contact", url: `${BASE_URL}/contact` },
+  ];
+
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <ContactPageSchema />
+      <BreadcrumbSchema items={breadcrumbs} />
       <Header />
       <main>
         <PageHeader

@@ -7,11 +7,23 @@ import {
   AnimatedCard,
   AnimatedCardContent,
 } from "@/components/ui/animated-card";
+import { BreadcrumbSchema } from "@/components/seo";
+
+const BASE_URL = "https://www.nexthorizonleadership.com";
 
 export const metadata: Metadata = {
   title: "Community",
   description:
     "A hub where search firms and hiring teams learn, share, and connect. Best practices, playbooks, and a trusted network.",
+  alternates: {
+    canonical: `${BASE_URL}/community`,
+  },
+  openGraph: {
+    title: "Community | Next Horizon Leadership",
+    description:
+      "A hub where search firms and hiring teams learn, share, and connect. Best practices, playbooks, and a trusted network.",
+    url: `${BASE_URL}/community`,
+  },
 };
 
 const membershipTiers = [
@@ -81,8 +93,14 @@ const membershipTiers = [
 ];
 
 export default function CommunityPage() {
+  const breadcrumbs = [
+    { name: "Home", url: BASE_URL },
+    { name: "Community", url: `${BASE_URL}/community` },
+  ];
+
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <BreadcrumbSchema items={breadcrumbs} />
       <Header />
       <main>
         <PageHeader

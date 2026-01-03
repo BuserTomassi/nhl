@@ -3,11 +3,23 @@ import { Calendar, Users, Sparkles, GraduationCap } from "lucide-react";
 import { Header, Footer } from "@/components/layout";
 import { PageHeader } from "@/components/marketing";
 import { StaggerChildren, StaggerItem, FadeIn } from "@/components/motion";
+import { BreadcrumbSchema } from "@/components/seo";
+
+const BASE_URL = "https://www.nexthorizonleadership.com";
 
 export const metadata: Metadata = {
   title: "Events",
   description:
     "Roundtables, labs, and live demos curated for each membership tier.",
+  alternates: {
+    canonical: `${BASE_URL}/events`,
+  },
+  openGraph: {
+    title: "Events | Next Horizon Leadership",
+    description:
+      "Roundtables, labs, and live demos curated for each membership tier.",
+    url: `${BASE_URL}/events`,
+  },
 };
 
 const events = [
@@ -42,8 +54,14 @@ const events = [
 ];
 
 export default function EventsPage() {
+  const breadcrumbs = [
+    { name: "Home", url: BASE_URL },
+    { name: "Events", url: `${BASE_URL}/events` },
+  ];
+
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <BreadcrumbSchema items={breadcrumbs} />
       <Header />
       <main>
         <PageHeader
@@ -100,4 +118,3 @@ export default function EventsPage() {
     </div>
   );
 }
-

@@ -9,11 +9,23 @@ import { Header, Footer } from "@/components/layout";
 import { PageHeader, SectionHeading } from "@/components/marketing";
 import { StaggerChildren, StaggerItem, FadeIn } from "@/components/motion";
 import { Button } from "@/components/ui/button";
+import { BreadcrumbSchema } from "@/components/seo";
+
+const BASE_URL = "https://www.nexthorizonleadership.com";
 
 export const metadata: Metadata = {
   title: "Insights",
   description:
     "Leadership transitions, AI in talent, and organizational design—cornerstone ideas, research notes, and playbooks crafted with our community.",
+  alternates: {
+    canonical: `${BASE_URL}/insights`,
+  },
+  openGraph: {
+    title: "Insights | Next Horizon Leadership",
+    description:
+      "Leadership transitions, AI in talent, and organizational design—cornerstone ideas, research notes, and playbooks crafted with our community.",
+    url: `${BASE_URL}/insights`,
+  },
 };
 
 const testimonials = [
@@ -53,8 +65,14 @@ const toolkits = [
 ];
 
 export default function InsightsPage() {
+  const breadcrumbs = [
+    { name: "Home", url: BASE_URL },
+    { name: "Insights", url: `${BASE_URL}/insights` },
+  ];
+
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <BreadcrumbSchema items={breadcrumbs} />
       <Header />
       <main>
         <PageHeader

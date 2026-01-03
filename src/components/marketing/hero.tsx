@@ -51,6 +51,7 @@ export function Hero() {
       {/* Parallax background with Ken Burns effect */}
       <ParallaxBackground
         src="/images/nhlHorizon.jpg"
+        alt="Leadership professionals looking toward a bright horizon at sunrise, symbolizing future-focused executive vision"
         kenBurns={true}
         speed={0.25}
       />

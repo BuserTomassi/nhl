@@ -1,16 +1,34 @@
 import type { Metadata } from "next";
 import { Header, Footer } from "@/components/layout";
 import { PageHeader } from "@/components/marketing";
+import { BreadcrumbSchema } from "@/components/seo";
+
+const BASE_URL = "https://www.nexthorizonleadership.com";
 
 export const metadata: Metadata = {
   title: "Terms of Service",
   description:
     "Terms of Service for Next Horizon Leadership. Please read these terms carefully before using our services.",
+  alternates: {
+    canonical: `${BASE_URL}/terms`,
+  },
+  openGraph: {
+    title: "Terms of Service | Next Horizon Leadership",
+    description:
+      "Terms of Service for Next Horizon Leadership. Please read these terms carefully before using our services.",
+    url: `${BASE_URL}/terms`,
+  },
 };
 
 export default function TermsPage() {
+  const breadcrumbs = [
+    { name: "Home", url: BASE_URL },
+    { name: "Terms of Service", url: `${BASE_URL}/terms` },
+  ];
+
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <BreadcrumbSchema items={breadcrumbs} />
       <Header />
       <main>
         <PageHeader
@@ -136,4 +154,3 @@ export default function TermsPage() {
     </div>
   );
 }
-

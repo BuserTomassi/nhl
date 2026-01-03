@@ -10,12 +10,24 @@ import {
   AnimatedCardTitle,
   AnimatedCardDescription,
 } from "@/components/ui/animated-card";
+import { ServiceSchema, BreadcrumbSchema } from "@/components/seo";
 import { services } from "@/data/services";
+
+const BASE_URL = "https://www.nexthorizonleadership.com";
 
 export const metadata: Metadata = {
   title: "Services",
   description:
     "Executive Search, AI For Talent Advisory, Org Design, and Interim Leadership services from Next Horizon Leadership.",
+  alternates: {
+    canonical: `${BASE_URL}/services`,
+  },
+  openGraph: {
+    title: "Services | Next Horizon Leadership",
+    description:
+      "Executive Search, AI For Talent Advisory, Org Design, and Interim Leadership services from Next Horizon Leadership.",
+    url: `${BASE_URL}/services`,
+  },
 };
 
 const iconMap = {
@@ -26,8 +38,20 @@ const iconMap = {
 };
 
 export default function ServicesPage() {
+  const serviceItems = services.map((s) => ({
+    name: s.title,
+    description: s.description,
+  }));
+
+  const breadcrumbs = [
+    { name: "Home", url: BASE_URL },
+    { name: "Services", url: `${BASE_URL}/services` },
+  ];
+
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <ServiceSchema services={serviceItems} />
+      <BreadcrumbSchema items={breadcrumbs} />
       <Header />
       <main>
         <PageHeader

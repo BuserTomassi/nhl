@@ -1,16 +1,34 @@
 import type { Metadata } from "next";
 import { Header, Footer } from "@/components/layout";
 import { PageHeader } from "@/components/marketing";
+import { BreadcrumbSchema } from "@/components/seo";
+
+const BASE_URL = "https://www.nexthorizonleadership.com";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
     "Privacy Policy for Next Horizon Leadership. Learn how we collect, use, and protect your personal information.",
+  alternates: {
+    canonical: `${BASE_URL}/privacy`,
+  },
+  openGraph: {
+    title: "Privacy Policy | Next Horizon Leadership",
+    description:
+      "Privacy Policy for Next Horizon Leadership. Learn how we collect, use, and protect your personal information.",
+    url: `${BASE_URL}/privacy`,
+  },
 };
 
 export default function PrivacyPage() {
+  const breadcrumbs = [
+    { name: "Home", url: BASE_URL },
+    { name: "Privacy Policy", url: `${BASE_URL}/privacy` },
+  ];
+
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <BreadcrumbSchema items={breadcrumbs} />
       <Header />
       <main>
         <PageHeader
@@ -132,4 +150,3 @@ export default function PrivacyPage() {
     </div>
   );
 }
-

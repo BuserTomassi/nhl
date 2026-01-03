@@ -2,16 +2,34 @@ import type { Metadata } from "next";
 import { Header, Footer } from "@/components/layout";
 import { PageHeader } from "@/components/marketing";
 import { FadeIn } from "@/components/motion";
+import { BreadcrumbSchema } from "@/components/seo";
+
+const BASE_URL = "https://www.nexthorizonleadership.com";
 
 export const metadata: Metadata = {
   title: "Partners",
   description:
     "A curated network of Executive Search firms, AI innovators, and Organizational Design experts.",
+  alternates: {
+    canonical: `${BASE_URL}/partners`,
+  },
+  openGraph: {
+    title: "Partners | Next Horizon Leadership",
+    description:
+      "A curated network of Executive Search firms, AI innovators, and Organizational Design experts.",
+    url: `${BASE_URL}/partners`,
+  },
 };
 
 export default function PartnersPage() {
+  const breadcrumbs = [
+    { name: "Home", url: BASE_URL },
+    { name: "Partners", url: `${BASE_URL}/partners` },
+  ];
+
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <BreadcrumbSchema items={breadcrumbs} />
       <Header />
       <main>
         <PageHeader
