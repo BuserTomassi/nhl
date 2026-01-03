@@ -10,7 +10,7 @@ interface LogoProps {
   showText?: boolean;
 }
 
-export function Logo({ className, showText = false }: LogoProps) {
+export function Logo({ className, showText = true }: LogoProps) {
   return (
     <Link href="/" className={cn("group flex items-center gap-2.5", className)}>
       <motion.div
@@ -29,15 +29,17 @@ export function Logo({ className, showText = false }: LogoProps) {
           priority
         />
       </motion.div>
-      <div className="flex flex-col">
-        <span className="font-headline text-base sm:text-lg font-semibold leading-tight tracking-tight">
-          <span className="text-gradient-cyan">Next</span>{" "}
-          <span className="text-foreground">Horizon</span>
-        </span>
-        <span className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-widest font-medium">
-          Leadership
-        </span>
-      </div>
+      {showText && (
+        <div className="flex flex-col">
+          <span className="font-headline text-base sm:text-lg font-semibold leading-tight tracking-tight">
+            <span className="text-gradient-cyan">Next</span>{" "}
+            <span className="text-foreground">Horizon</span>
+          </span>
+          <span className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-widest font-medium">
+            Leadership
+          </span>
+        </div>
+      )}
     </Link>
   );
 }

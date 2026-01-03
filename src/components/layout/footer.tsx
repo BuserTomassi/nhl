@@ -5,13 +5,12 @@ import { motion } from "framer-motion";
 import { Linkedin, Twitter, Mail, ArrowUpRight } from "lucide-react";
 import { Logo } from "./logo";
 import { NewsletterForm } from "@/components/forms/newsletter-form";
-import { navigationLinks } from "@/data/navigation";
 
 const footerLinks = {
   company: [
-    { label: "About", href: "/about" },
     { label: "Services", href: "/services" },
     { label: "Community", href: "/community" },
+    { label: "Events", href: "/events" },
     { label: "Contact", href: "/contact" },
   ],
   resources: [

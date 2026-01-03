@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 
-const LOGO_TOKEN = "pk_fjuP3CoeSTe00uSRZyOTXA";
+const LOGO_TOKEN = process.env.NEXT_PUBLIC_LOGO_DEV_TOKEN;
 
 const row1Companies = [
   { domain: "apple.com", name: "Apple" },
@@ -58,16 +58,46 @@ const row2Companies = [
 ];
 
 function LogoCard({ company }: { company: { domain: string; name: string } }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const [hasLoaded, setHasLoaded] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          // Once visible, no need to observe anymore
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px" } // Load images 200px before they enter viewport
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="flex-shrink-0 group">
-            <div className="relative h-12 w-12 sm:h-16 sm:w-16 rounded-lg bg-white shadow-md overflow-hidden group-hover:shadow-lg group-hover:scale-105 transition-all duration-300">
-              <Image
-                src={`https://img.logo.dev/${company.domain}?token=${LOGO_TOKEN}`}
-                alt={company.name}
-                fill
-                className="object-contain p-2 sm:p-2.5"
-                unoptimized
-              />
+    <div ref={ref} className="flex-shrink-0 group">
+      <div className="relative h-12 w-12 sm:h-16 sm:w-16 rounded-lg bg-white shadow-md overflow-hidden group-hover:shadow-lg group-hover:scale-105 transition-all duration-300">
+        {isVisible ? (
+          <Image
+            src={`https://img.logo.dev/${company.domain}?token=${LOGO_TOKEN}`}
+            alt={company.name}
+            fill
+            className={`object-contain p-2 sm:p-2.5 transition-opacity duration-300 ${
+              hasLoaded ? "opacity-100" : "opacity-0"
+            }`}
+            unoptimized
+            onLoad={() => setHasLoaded(true)}
+          />
+        ) : (
+          <div className="absolute inset-0 bg-slate-100 dark:bg-slate-800 animate-pulse" />
+        )}
       </div>
     </div>
   );
