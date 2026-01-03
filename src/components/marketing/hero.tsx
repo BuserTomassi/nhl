@@ -84,7 +84,7 @@ export function Hero() {
               variants={wordVariants}
               className={
                 i === 2
-                  ? "text-gradient bg-gradient-to-r from-white via-cyan-200 to-cyan-400 bg-clip-text text-transparent"
+                  ? "bg-gradient-to-r from-white via-cyan-300 to-cyan-500 bg-clip-text text-transparent"
                   : ""
               }
             >
