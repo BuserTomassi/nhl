@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { ParallaxBackground, NoiseOverlay, Spotlight } from "@/components/effects";
 import { Button } from "@/components/ui/button";
+import { hero } from "@/data/copy";
 
 // Animation variants for staggered text reveal
 const containerVariants = {
@@ -44,14 +45,13 @@ const wordVariants = {
 };
 
 export function Hero() {
-  const headlineWords = ["Shaping", "the", "Future", "of", "Leadership"];
+  const headlineWords = hero.headline;
 
   return (
     <section className="relative isolate flex min-h-[70vh] sm:min-h-[75vh] lg:min-h-[85vh] items-center overflow-hidden">
       {/* Parallax background with Ken Burns effect */}
       <ParallaxBackground
         src="/images/nhlHorizon.jpg"
-        alt="Leadership professionals looking toward a bright horizon at sunrise, symbolizing future-focused executive vision"
         kenBurns={true}
         speed={0.25}
       />
@@ -78,13 +78,13 @@ export function Hero() {
           className="font-headline text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-[1.05] tracking-tight"
           variants={itemVariants}
         >
-          {headlineWords.slice(0, 3).map((word, i) => (
+          {headlineWords.slice(0, 2).map((word, i) => (
             <motion.span
               key={i}
               custom={i}
               variants={wordVariants}
               className={
-                i === 2
+                i === 1
                   ? "bg-gradient-to-r from-white via-cyan-300 to-cyan-500 bg-clip-text text-transparent"
                   : ""
               }
@@ -93,37 +93,52 @@ export function Hero() {
             </motion.span>
           ))}
           <br className="hidden sm:block" />
-          {headlineWords.slice(3).map((word, i) => (
-            <motion.span key={i + 3} custom={i + 3} variants={wordVariants}>
+          {headlineWords.slice(2).map((word, i) => (
+            <motion.span
+              key={i + 2}
+              custom={i + 2}
+              variants={wordVariants}
+              className={
+                i === 0
+                  ? "bg-gradient-to-r from-cyan-300 via-cyan-400 to-white bg-clip-text text-transparent"
+                  : ""
+              }
+            >
               {word}{" "}
             </motion.span>
           ))}
         </motion.h1>
 
-        {/* Subtitle */}
+        {/* Subtitle - loss-framed persuasive copy */}
         <motion.p
           variants={itemVariants}
           className="mt-6 sm:mt-8 max-w-2xl text-lg sm:text-xl text-slate-200/90 leading-relaxed"
         >
-          Next Horizon Leadership empowers forward-looking CEOs, CHROs, and
-          talent leaders by connecting them with world-class search partners,
-          leading AI innovators, and organizational experts.
+          {hero.subtitle}
         </motion.p>
 
-        {/* CTAs */}
+        {/* Urgency indicator */}
+        <motion.p
+          variants={itemVariants}
+          className="mt-4 text-sm text-cyan-300/80 font-medium"
+        >
+          {hero.urgencyIndicator}
+        </motion.p>
+
+        {/* CTAs - updated with persuasive language */}
         <motion.div
           variants={itemVariants}
           className="mt-8 sm:mt-10 flex flex-wrap gap-4"
         >
           <Link href="/contact">
             <Button variant="gradient" size="lg" className="group">
-              Get in Touch
+              {hero.ctas.primary}
               <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Button>
           </Link>
           <Link href="/services">
             <Button variant="glass" size="lg" className="group">
-              Our Services
+              {hero.ctas.secondary}
               <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Button>
           </Link>

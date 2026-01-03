@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Linkedin, Twitter, Mail, ArrowUpRight } from "lucide-react";
 import { Logo } from "./logo";
 import { NewsletterForm } from "@/components/forms/newsletter-form";
+import { socialProofNumbers } from "@/data/social-proof";
 
 const footerLinks = {
   company: [
@@ -62,16 +63,25 @@ export function Footer() {
                 viewport={{ once: true }}
                 className="font-headline text-2xl sm:text-3xl font-bold mb-3"
               >
-                Stay Ahead of the Curve
+                The Monday Brief That CHROs Read First
               </motion.h3>
               <motion.p
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
                 viewport={{ once: true }}
-                className="text-white/60"
+                className="text-white/60 mb-2"
               >
-                Get insights on leadership, talent trends, and AI innovation delivered to your inbox.
+                Weekly insights on leadership, talent trends, and AI innovation. No fluff.
+              </motion.p>
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 }}
+                viewport={{ once: true }}
+                className="text-sm text-primary/80"
+              >
+                Join {socialProofNumbers.newsletterSubscribers}+ HR leaders already subscribed
               </motion.p>
             </div>
             <motion.div
@@ -91,8 +101,11 @@ export function Footer() {
             {/* Brand column */}
             <div className="lg:col-span-1">
               <Logo showText={false} className="mb-6" />
-              <p className="text-sm text-white/60 leading-relaxed mb-6">
-                Empowering forward-looking leaders by connecting them with world-class partners and innovators.
+              <p className="text-sm text-white/60 leading-relaxed mb-4">
+                The right connection at the right moment.
+              </p>
+              <p className="text-xs text-white/40 leading-relaxed mb-6">
+                Connecting forward-looking leaders with vetted partners and innovators who&apos;ve already proven themselves.
               </p>
               {/* Social links */}
               <div className="flex gap-3">
@@ -156,18 +169,21 @@ export function Footer() {
             {/* Contact column */}
             <div>
               <h4 className="text-sm font-semibold tracking-wider uppercase mb-4 text-white/80">
-                Get in Touch
+                Let&apos;s Talk
               </h4>
               <p className="text-sm text-white/60 mb-4">
-                Ready to shape the future of leadership?
+                Ready to find the right connection at the right moment?
               </p>
               <Link
                 href="/contact"
                 className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
               >
-                Contact Us
+                Start a Conversation
                 <ArrowUpRight className="h-4 w-4" />
               </Link>
+              <p className="text-xs text-white/40 mt-3">
+                Most respond within {socialProofNumbers.avgResponseTime}
+              </p>
             </div>
           </div>
         </div>

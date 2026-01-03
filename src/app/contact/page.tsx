@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
-import { Mail, MapPin, Clock } from "lucide-react";
+import { Mail, MapPin, Clock, MessageSquareQuote } from "lucide-react";
 import { Header, Footer } from "@/components/layout";
 import { PageHeader, SectionHeading } from "@/components/marketing";
 import { ContactForm } from "@/components/forms";
-import { FadeIn } from "@/components/motion";
+import { FadeIn, StaggerChildren, StaggerItem } from "@/components/motion";
 import { ContactPageSchema, BreadcrumbSchema } from "@/components/seo";
+import { contactPage } from "@/data/copy";
+import { socialProofNumbers, testimonials } from "@/data/social-proof";
 
 const BASE_URL = "https://www.nexthorizonleadership.com";
 
@@ -39,7 +41,7 @@ const contactInfo = [
   {
     icon: Clock,
     label: "Response Time",
-    value: "Within 24 hours",
+    value: `Most respond within ${socialProofNumbers.avgResponseTime}`,
     href: null,
   },
 ];
@@ -50,6 +52,9 @@ export default function ContactPage() {
     { name: "Contact", url: `${BASE_URL}/contact` },
   ];
 
+  // Get a short testimonial for the sidebar
+  const sidebarTestimonial = testimonials[4]; // "The Monday brief is the only newsletter..."
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <ContactPageSchema />
@@ -57,8 +62,8 @@ export default function ContactPage() {
       <Header />
       <main>
         <PageHeader
-          title="Contact Us"
-          subtitle="Tell us about your executive hire. We'll respond within one business day."
+          title={contactPage.title}
+          subtitle={contactPage.subtitle}
         />
 
         <section className="relative py-16 sm:py-24 overflow-hidden">
@@ -80,12 +85,10 @@ export default function ContactPage() {
                     Get in Touch
                   </h3>
                   <p className="text-muted-foreground mb-8 leading-relaxed">
-                    Ready to discuss your leadership and talent needs? We&apos;re
-                    here to help connect you with the right partners and
-                    solutions.
+                    {contactPage.formSubheading}
                   </p>
 
-                  <div className="space-y-6">
+                  <div className="space-y-6 mb-10">
                     {contactInfo.map((item) => (
                       <div key={item.label} className="flex items-start gap-4">
                         <div className="flex-shrink-0 h-12 w-12 rounded-xl icon-container flex items-center justify-center text-primary">
@@ -111,6 +114,19 @@ export default function ContactPage() {
                       </div>
                     ))}
                   </div>
+
+                  {/* Mini testimonial */}
+                  {sidebarTestimonial && (
+                    <div className="p-5 rounded-xl bg-primary/5 border border-primary/10">
+                      <MessageSquareQuote className="h-6 w-6 text-primary/40 mb-3" />
+                      <p className="text-sm italic text-muted-foreground mb-3">
+                        &ldquo;{sidebarTestimonial.quote}&rdquo;
+                      </p>
+                      <p className="text-xs text-muted-foreground/70">
+                        — {sidebarTestimonial.author}, {sidebarTestimonial.title}
+                      </p>
+                    </div>
+                  )}
                 </FadeIn>
               </div>
 
@@ -120,7 +136,7 @@ export default function ContactPage() {
                   <div className="rounded-2xl bg-white dark:bg-slate-800/50 p-6 sm:p-10 shadow-lg border border-slate-200/80 dark:border-white/10">
                     <SectionHeading
                       eyebrow="Send a message"
-                      title="Share your needs"
+                      title={contactPage.formHeading}
                       align="left"
                       className="mb-8"
                     />
@@ -129,6 +145,35 @@ export default function ContactPage() {
                 </FadeIn>
               </div>
             </div>
+
+            {/* What happens next section */}
+            <FadeIn delay={0.4}>
+              <div className="mt-20 max-w-4xl mx-auto">
+                <SectionHeading
+                  eyebrow="What to expect"
+                  title={contactPage.whatHappensNext.title}
+                  className="mb-12"
+                />
+
+                <StaggerChildren className="grid md:grid-cols-3 gap-8">
+                  {contactPage.whatHappensNext.steps.map((step, index) => (
+                    <StaggerItem key={step.number}>
+                      <div className="text-center">
+                        <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-white text-xl font-bold mb-4">
+                          {step.number}
+                        </div>
+                        <h4 className="font-semibold text-lg mb-2">
+                          {step.title}
+                        </h4>
+                        <p className="text-muted-foreground text-sm leading-relaxed">
+                          {step.description}
+                        </p>
+                      </div>
+                    </StaggerItem>
+                  ))}
+                </StaggerChildren>
+              </div>
+            </FadeIn>
           </div>
         </section>
       </main>

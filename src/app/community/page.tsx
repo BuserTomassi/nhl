@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
-import { Crown, Gem, Medal, Award, Check } from "lucide-react";
+import Link from "next/link";
+import { Crown, Gem, Medal, Award, Check, ArrowRight, Users } from "lucide-react";
 import { Header, Footer } from "@/components/layout";
-import { PageHeader } from "@/components/marketing";
+import { PageHeader, SectionHeading } from "@/components/marketing";
 import { StaggerChildren, StaggerItem, FadeIn } from "@/components/motion";
 import {
   AnimatedCard,
   AnimatedCardContent,
 } from "@/components/ui/animated-card";
+import { Button } from "@/components/ui/button";
 import { BreadcrumbSchema } from "@/components/seo";
+import { communityPage, scarcity } from "@/data/copy";
+import { socialProofNumbers } from "@/data/social-proof";
 
 const BASE_URL = "https://www.nexthorizonleadership.com";
 
@@ -30,8 +34,8 @@ const membershipTiers = [
   {
     name: "Diamond Membership",
     subtitle: "Invite-Only",
-    description:
-      "For CHRO/CPOs at scaled organizations — A highly exclusive peer group designed for strategic discussion and confidential collaboration.",
+    scarcityNote: `${socialProofNumbers.diamondSeatsTotal} seats per year. ${socialProofNumbers.diamondSeatsAvailable} currently available.`,
+    description: communityPage.tierIdentity.diamond,
     icon: Gem,
     benefits: [
       "Private, off-the-record peer roundtables",
@@ -44,12 +48,14 @@ const membershipTiers = [
     ],
     featured: true,
     gradient: "from-cyan-500 to-blue-600",
+    cta: "Apply for Diamond",
+    ctaVariant: "gradient" as const,
   },
   {
     name: "Platinum Membership",
     subtitle: "Invite-Only and Cohort-Based",
-    description:
-      "For smaller-scale CPOs, CHRO successors, Chief Talent Officers, and Private Capital Talent Officers.",
+    scarcityNote: "Limited cohorts starting Q1 2026",
+    description: communityPage.tierIdentity.platinum,
     icon: Crown,
     benefits: [
       "Cohort-based peer learning and mentorship",
@@ -60,12 +66,14 @@ const membershipTiers = [
     ],
     featured: false,
     gradient: "from-slate-400 to-slate-600",
+    cta: "Request Platinum Invite",
+    ctaVariant: "outline" as const,
   },
   {
     name: "Gold Membership",
     subtitle: "Paid Membership",
-    description:
-      "For ambitious HR and Talent professionals seeking development and career growth.",
+    scarcityNote: "Charter rates available until launch",
+    description: communityPage.tierIdentity.gold,
     icon: Medal,
     benefits: [
       "Invitations to open events and webinars",
@@ -75,12 +83,14 @@ const membershipTiers = [
     ],
     featured: false,
     gradient: "from-amber-400 to-amber-600",
+    cta: "Join Gold Waitlist",
+    ctaVariant: "outline" as const,
   },
   {
     name: "Silver Membership",
-    subtitle: "Initial Entry Level",
-    description:
-      "For anyone interested in career and functional insights and staying connected to like-minded professionals.",
+    subtitle: "Free Entry Level",
+    scarcityNote: null,
+    description: communityPage.tierIdentity.silver,
     icon: Award,
     benefits: [
       "Newsletter and trend updates",
@@ -89,6 +99,8 @@ const membershipTiers = [
     ],
     featured: false,
     gradient: "from-slate-300 to-slate-500",
+    cta: "Subscribe to Silver",
+    ctaVariant: "secondary" as const,
   },
 ];
 
@@ -104,8 +116,8 @@ export default function CommunityPage() {
       <Header />
       <main>
         <PageHeader
-          title="Community Portal"
-          subtitle="A hub where search firms and hiring teams learn, share, and connect. Best practices, playbooks, and a trusted network."
+          title={communityPage.title}
+          subtitle={communityPage.subtitle}
         />
 
         <section className="relative py-16 sm:py-24 overflow-hidden">
@@ -119,6 +131,21 @@ export default function CommunityPage() {
           <div className="absolute inset-0 section-vignette" />
 
           <div className="container relative z-10">
+            {/* Charter member callout */}
+            <FadeIn>
+              <div className="max-w-2xl mx-auto mb-12 p-6 rounded-2xl bg-gradient-to-r from-primary/10 via-accent/5 to-primary/10 border border-primary/20 text-center">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Users className="h-5 w-5 text-primary" />
+                  <span className="text-sm font-semibold text-primary uppercase tracking-wide">
+                    Charter Member Opportunity
+                  </span>
+                </div>
+                <p className="text-muted-foreground">
+                  {communityPage.charterMessage}
+                </p>
+              </div>
+            </FadeIn>
+
             <StaggerChildren className="grid gap-6 lg:gap-8 md:grid-cols-2">
               {membershipTiers.map((tier) => {
                 const Icon = tier.icon;
@@ -136,7 +163,7 @@ export default function CommunityPage() {
                         {/* Featured badge */}
                         {tier.featured && (
                           <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-gradient-to-r from-primary to-accent text-xs font-semibold text-white">
-                            Most Popular
+                            Most Exclusive
                           </div>
                         )}
 
@@ -154,7 +181,16 @@ export default function CommunityPage() {
                           </div>
                         </div>
 
-                        <p className="text-muted-foreground mb-6 leading-relaxed">
+                        {/* Scarcity note */}
+                        {tier.scarcityNote && (
+                          <p className="text-sm font-medium text-destructive/80 mb-4 flex items-center gap-2">
+                            <span className="inline-block h-2 w-2 rounded-full bg-destructive/60 animate-pulse" />
+                            {tier.scarcityNote}
+                          </p>
+                        )}
+
+                        {/* Identity-based description */}
+                        <p className="text-muted-foreground mb-6 leading-relaxed italic">
                           {tier.description}
                         </p>
 
@@ -162,7 +198,7 @@ export default function CommunityPage() {
                           <p className="text-sm font-semibold mb-4">
                             Benefits include:
                           </p>
-                          <ul className="space-y-3">
+                          <ul className="space-y-3 mb-6">
                             {tier.benefits.map((benefit, index) => (
                               <li
                                 key={index}
@@ -175,6 +211,17 @@ export default function CommunityPage() {
                               </li>
                             ))}
                           </ul>
+
+                          {/* CTA */}
+                          <Link href="/contact">
+                            <Button
+                              variant={tier.ctaVariant}
+                              className="w-full group"
+                            >
+                              {tier.cta}
+                              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                            </Button>
+                          </Link>
                         </div>
                       </AnimatedCardContent>
                     </AnimatedCard>
@@ -183,20 +230,47 @@ export default function CommunityPage() {
               })}
             </StaggerChildren>
 
-            {/* Coming Soon */}
+            {/* Not sure which tier? */}
             <FadeIn delay={0.4}>
+              <div className="mt-16 text-center max-w-2xl mx-auto">
+                <SectionHeading
+                  eyebrow="Not sure which tier is right for you?"
+                  title="Let's talk about where you are—and where you're headed"
+                  subtitle="Your current role, goals, and timeline will help us recommend the right level of engagement."
+                />
+                <div className="mt-8">
+                  <Link href="/contact">
+                    <Button variant="outline" size="lg" className="group">
+                      Help Me Choose
+                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </FadeIn>
+
+            {/* Waitlist with scarcity */}
+            <FadeIn delay={0.5}>
               <div className="mt-20 text-center">
                 <div className="inline-block">
                   <div className="relative">
-                    <h2 className="font-headline text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-gradient text-gradient-brand">
-                      COMING SOON
+                    <h2 className="font-headline text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gradient text-gradient-brand">
+                      Launching Q1 2026
                     </h2>
                     <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 via-accent/10 to-primary/20 blur-2xl -z-10 opacity-50" />
                   </div>
                 </div>
-                <p className="mt-6 text-lg text-muted-foreground">
-                  Community Portal launching soon. Be among the first to join.
+                <p className="mt-6 text-lg text-muted-foreground max-w-xl mx-auto">
+                  {communityPage.waitlistCta}. {scarcity.charterBenefits}.
                 </p>
+                <div className="mt-6">
+                  <Link href="/contact">
+                    <Button variant="gradient" size="lg" className="group">
+                      Join the Waitlist
+                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </FadeIn>
           </div>

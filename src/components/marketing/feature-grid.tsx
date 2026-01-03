@@ -2,7 +2,7 @@
 
 import { Users, Sparkles, LayoutGrid } from "lucide-react";
 import { SectionHeading } from "./section-heading";
-import { StaggerChildren, StaggerItem } from "@/components/motion";
+import { StaggerChildren, StaggerItem, FadeIn } from "@/components/motion";
 import {
   AnimatedCard,
   AnimatedCardContent,
@@ -11,6 +11,7 @@ import {
   AnimatedCardDescription,
 } from "@/components/ui/animated-card";
 import { whatWeDo } from "@/data/services";
+import { whatWeDoSection } from "@/data/copy";
 
 const iconMap = {
   users: Users,
@@ -34,10 +35,17 @@ export function FeatureGrid() {
       <div className="container relative z-10">
         <SectionHeading
           id="what-we-do"
-          eyebrow="What We Do"
-          title="A trusted ecosystem for leadership, talent, and transformation."
-          subtitle="Next Horizon Leadership brings together senior decision-makers and best-in-class partners to address the most critical people challenges organizations face today."
+          eyebrow={whatWeDoSection.eyebrow}
+          title={whatWeDoSection.title}
+          subtitle={whatWeDoSection.subtitle}
         />
+
+        {/* Pacing statement - acknowledges their reality before leading */}
+        <FadeIn delay={0.2}>
+          <p className="text-center text-lg text-muted-foreground italic max-w-2xl mx-auto mb-12">
+            {whatWeDoSection.pacingStatement}
+          </p>
+        </FadeIn>
 
         <StaggerChildren className="grid gap-6 sm:gap-8 md:grid-cols-3">
           {whatWeDo.map((item) => {
@@ -49,6 +57,10 @@ export function FeatureGrid() {
                     <AnimatedCardIcon>
                       {Icon && <Icon className="h-6 w-6" />}
                     </AnimatedCardIcon>
+                    {/* Problem statement first - creates resonance */}
+                    <p className="text-sm text-primary font-medium mb-2">
+                      {item.problem}
+                    </p>
                     <AnimatedCardTitle>{item.title}</AnimatedCardTitle>
                     <AnimatedCardDescription>
                       {item.description}

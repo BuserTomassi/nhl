@@ -1,7 +1,10 @@
 "use client";
 
+import { Linkedin } from "lucide-react";
 import { SectionHeading } from "./section-heading";
-import { FadeIn } from "@/components/motion";
+import { FadeIn, StaggerChildren, StaggerItem } from "@/components/motion";
+import { about } from "@/data/copy";
+import { founder } from "@/data/social-proof";
 
 export function About() {
   return (
@@ -15,33 +18,109 @@ export function About() {
       {/* Vignette */}
       <div className="absolute inset-0 section-vignette" />
 
-      <div className="container relative z-10 max-w-4xl">
-        <SectionHeading
-          eyebrow="About"
-          title="About Next Horizon Leadership"
-        />
+      <div className="container relative z-10">
+        {/* Two-column layout */}
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start max-w-6xl mx-auto">
+          {/* Left column - Founder story */}
+          <div>
+            <SectionHeading
+              eyebrow={about.eyebrow}
+              title={about.title}
+              align="left"
+              className="mb-8"
+            />
 
-        <FadeIn delay={0.2}>
-          <div className="space-y-6 text-center">
-            <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed">
-              Next Horizon Leadership was founded to help organizations and
-              leaders navigate the defining leadership and talent challenges of
-              our time.
-            </p>
-            <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed">
-              By carefully curating both the community and its partners, Next
-              Horizon Leadership creates a trusted environment where meaningful
-              connections lead to real impact.
-            </p>
-          </div>
-        </FadeIn>
+            <FadeIn delay={0.2}>
+              <div className="space-y-6">
+                {about.founderStory.map((paragraph, index) => (
+                  <p
+                    key={index}
+                    className="text-lg text-muted-foreground leading-relaxed"
+                  >
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            </FadeIn>
 
-        {/* Decorative element */}
-        <FadeIn delay={0.4}>
-          <div className="mt-12 flex justify-center">
-            <div className="h-1 w-24 rounded-full bg-gradient-to-r from-primary to-accent" />
+            {/* Founder card */}
+            <FadeIn delay={0.4}>
+              <div className="mt-10 p-6 rounded-2xl bg-white/50 dark:bg-slate-800/30 border border-slate-200/50 dark:border-slate-700/50">
+                <div className="flex items-start gap-4">
+                  <div className="relative h-16 w-16 rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20 flex-shrink-0">
+                    {/* Placeholder for founder image */}
+                    <div className="absolute inset-0 flex items-center justify-center text-2xl font-bold text-primary/60">
+                      {founder.name.split(" ").map(n => n[0]).join("")}
+                    </div>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-semibold text-foreground">
+                      {founder.name}
+                    </h4>
+                    <p className="text-sm text-primary font-medium">
+                      {founder.title}
+                    </p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {founder.credentials.slice(0, 2).map((cred, i) => (
+                        <span
+                          key={i}
+                          className="text-xs px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-700 text-muted-foreground"
+                        >
+                          {cred}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <a
+                    href={founder.linkedIn}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-shrink-0 h-9 w-9 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+                  >
+                    <Linkedin className="h-4 w-4" />
+                  </a>
+                </div>
+                <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
+                  {founder.shortBio}
+                </p>
+              </div>
+            </FadeIn>
           </div>
-        </FadeIn>
+
+          {/* Right column - What We Believe (Manifesto) */}
+          <div className="lg:pt-16">
+            <FadeIn delay={0.3}>
+              <h3 className="font-headline text-2xl font-bold mb-8 text-foreground">
+                {about.manifesto.title}
+              </h3>
+            </FadeIn>
+
+            <StaggerChildren className="space-y-6">
+              {about.manifesto.beliefs.map((belief, index) => (
+                <StaggerItem key={index}>
+                  <div className="relative pl-6 border-l-2 border-primary/30 hover:border-primary transition-colors">
+                    <h4 className="font-semibold text-foreground mb-2">
+                      {belief.headline}
+                    </h4>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {belief.detail}
+                    </p>
+                  </div>
+                </StaggerItem>
+              ))}
+            </StaggerChildren>
+
+            {/* Decorative element */}
+            <FadeIn delay={0.6}>
+              <div className="mt-12 flex items-center gap-4">
+                <div className="h-1 w-16 rounded-full bg-gradient-to-r from-primary to-accent" />
+                <p className="text-sm text-muted-foreground italic">
+                  The right connection at the right moment.
+                </p>
+              </div>
+            </FadeIn>
+          </div>
+        </div>
       </div>
     </section>
   );

@@ -7,3 +7,9 @@ export { PageHeader } from "./page-header";
 export { SectionHeading } from "./section-heading";
 export { StatsSection } from "./stats-section";
 export { TestimonialSection } from "./testimonial-section";
+
+// New persuasion components
+export { FounderCard } from "./founder-card";
+export { TestimonialCard } from "./testimonial-card";
+export { WaitlistForm } from "./waitlist-form";
+export { WhatHappensNext } from "./what-happens-next";

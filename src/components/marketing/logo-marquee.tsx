@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
+import { socialProofNumbers } from "@/data/social-proof";
 
 const LOGO_TOKEN = process.env.NEXT_PUBLIC_LOGO_DEV_TOKEN;
 
@@ -140,15 +141,21 @@ export function LogoMarquee() {
       <div className="absolute inset-0 bg-gradient-to-b from-slate-100 to-white dark:from-slate-900/50 dark:to-slate-950/50" />
 
       <div className="container relative z-10 mb-10">
-        <motion.p
+        {/* Updated headline with social proof */}
+        <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center text-sm font-medium tracking-[0.2em] text-muted-foreground uppercase"
+          className="text-center"
         >
-          Trusted by leaders from world-class organizations
-        </motion.p>
+          <p className="text-sm font-medium tracking-[0.2em] text-muted-foreground uppercase mb-2">
+            Trusted by CHROs and talent leaders from
+          </p>
+          <p className="text-xs text-muted-foreground/70">
+            {socialProofNumbers.newsletterSubscribers}+ leaders in our network
+          </p>
+        </motion.div>
       </div>
 
       <div ref={containerRef} className="space-y-6">

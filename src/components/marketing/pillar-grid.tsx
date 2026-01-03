@@ -2,7 +2,7 @@
 
 import { Crown, Search, Sparkles, GraduationCap } from "lucide-react";
 import { SectionHeading } from "./section-heading";
-import { StaggerChildren, StaggerItem } from "@/components/motion";
+import { StaggerChildren, StaggerItem, FadeIn } from "@/components/motion";
 import {
   AnimatedCard,
   AnimatedCardContent,
@@ -11,6 +11,7 @@ import {
   AnimatedCardDescription,
 } from "@/components/ui/animated-card";
 import { whyNHL } from "@/data/services";
+import { whyNHLSection } from "@/data/copy";
 
 const iconMap = {
   crown: Crown,
@@ -35,17 +36,24 @@ export function PillarGrid() {
       <div className="container relative z-10">
         <SectionHeading
           id="why-next-horizon"
-          eyebrow="Why Next Horizon Leadership"
-          title="Where leaders and partners come together to shape what's next."
-          subtitle="We exist at the intersection of leadership decision-makers, search partners, AI innovators, and rising HR talent. Our curated approach accelerates leadership transitions, introduces breakthrough solutions, and future-proofs organizations."
+          eyebrow={whyNHLSection.eyebrow}
+          title={whyNHLSection.title}
+          subtitle={whyNHLSection.subtitle}
         />
+
+        {/* Identity statement - speaks to who they are */}
+        <FadeIn delay={0.2}>
+          <p className="text-center text-lg font-medium text-primary max-w-2xl mx-auto mb-12">
+            {whyNHLSection.identityStatement}
+          </p>
+        </FadeIn>
 
         <StaggerChildren className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {whyNHL.map((pillar) => {
             const Icon = iconMap[pillar.icon as keyof typeof iconMap];
             return (
               <StaggerItem key={pillar.title}>
-                <AnimatedCard variant="glow" className="h-full text-center">
+                <AnimatedCard variant="glow" className="h-full text-center group">
                   <AnimatedCardContent className="flex flex-col items-center">
                     <AnimatedCardIcon className="mx-auto h-16 w-16 rounded-2xl">
                       {Icon && <Icon className="h-7 w-7" />}
@@ -56,6 +64,10 @@ export function PillarGrid() {
                     <AnimatedCardDescription className="text-sm">
                       {pillar.description}
                     </AnimatedCardDescription>
+                    {/* Identity-based messaging - shown on hover */}
+                    <p className="mt-3 text-xs text-primary/80 italic opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      {pillar.identity}
+                    </p>
                   </AnimatedCardContent>
                 </AnimatedCard>
               </StaggerItem>

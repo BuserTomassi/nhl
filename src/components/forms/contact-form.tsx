@@ -10,7 +10,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { Loader2, CheckCircle, AlertCircle, ArrowRight } from "lucide-react";
+import { Loader2, CheckCircle, AlertCircle, ArrowRight, Calendar } from "lucide-react";
+import { ctaVariants } from "@/data/copy";
 
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/xykynnpq";
 
@@ -18,10 +19,19 @@ const contactSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
   company: z.string().optional(),
+  timeline: z.string().optional(),
   message: z.string().min(10, "Message must be at least 10 characters"),
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
+
+const timelineOptions = [
+  { value: "", label: "Select a timeline" },
+  { value: "immediately", label: "Immediately - We're ready now" },
+  { value: "30-days", label: "Within 30 days" },
+  { value: "90-days", label: "Within 90 days" },
+  { value: "exploring", label: "Just exploring options" },
+];
 
 export function ContactForm() {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
@@ -74,10 +84,15 @@ export function ContactForm() {
             initial={{ opacity: 0, scale: 0.95, y: -10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="flex items-center gap-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 px-5 py-4 text-emerald-800 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800/30"
+            className="rounded-xl bg-emerald-50 dark:bg-emerald-900/20 px-5 py-4 text-emerald-800 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800/30"
           >
-            <CheckCircle className="h-5 w-5 flex-shrink-0" />
-            <p className="font-medium">Thank you! Your message has been sent successfully.</p>
+            <div className="flex items-center gap-3 mb-2">
+              <CheckCircle className="h-5 w-5 flex-shrink-0" />
+              <p className="font-medium">Message sent!</p>
+            </div>
+            <p className="text-sm text-emerald-700 dark:text-emerald-300">
+              We typically respond within 4 hours during business days. You&apos;ll hear from a real person, not a bot.
+            </p>
           </motion.div>
         )}
 
@@ -90,7 +105,7 @@ export function ContactForm() {
             className="flex items-center gap-3 rounded-xl bg-red-50 dark:bg-red-900/20 px-5 py-4 text-red-800 dark:text-red-200 border border-red-200 dark:border-red-800/30"
           >
             <AlertCircle className="h-5 w-5 flex-shrink-0" />
-            <p className="font-medium">Sorry, something went wrong. Please try again.</p>
+            <p className="font-medium">Sorry, something went wrong. Please try again or email us directly.</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -102,7 +117,7 @@ export function ContactForm() {
           </Label>
           <Input
             id="name"
-            placeholder="John Doe"
+            placeholder="Jane Smith"
             {...register("name")}
             className={cn(
               "h-12 rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200",
@@ -130,7 +145,7 @@ export function ContactForm() {
           <Input
             id="email"
             type="email"
-            placeholder="john@example.com"
+            placeholder="jane@company.com"
             {...register("email")}
             className={cn(
               "h-12 rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200",
@@ -152,25 +167,47 @@ export function ContactForm() {
         </div>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="company" className="text-sm font-medium">
-          Company <span className="text-muted-foreground">(optional)</span>
-        </Label>
-        <Input
-          id="company"
-          placeholder="Your company"
-          {...register("company")}
-          className="h-12 rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-        />
+      <div className="grid gap-6 sm:grid-cols-2">
+        <div className="space-y-2">
+          <Label htmlFor="company" className="text-sm font-medium">
+            Company <span className="text-muted-foreground">(optional)</span>
+          </Label>
+          <Input
+            id="company"
+            placeholder="Your company"
+            {...register("company")}
+            className="h-12 rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="timeline" className="text-sm font-medium">
+            Timeline <span className="text-muted-foreground">(optional)</span>
+          </Label>
+          <div className="relative">
+            <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+            <select
+              id="timeline"
+              {...register("timeline")}
+              className="h-12 w-full pl-10 pr-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 text-sm appearance-none cursor-pointer"
+            >
+              {timelineOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="message" className="text-sm font-medium">
-          How can we support you?
+          What are you trying to solve?
         </Label>
         <Textarea
           id="message"
-          placeholder="Tell us about your leadership and talent needs..."
+          placeholder="Tell us about your situation—leadership transitions, AI evaluation, org design challenges, or something else..."
           rows={6}
           {...register("message")}
           className={cn(
@@ -192,25 +229,30 @@ export function ContactForm() {
         </AnimatePresence>
       </div>
 
-      <Button
-        type="submit"
-        variant="gradient"
-        size="lg"
-        className="w-full sm:w-auto group"
-        disabled={status === "submitting"}
-      >
-        {status === "submitting" ? (
-          <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Sending...
-          </>
-        ) : (
-          <>
-            Send Message
-            <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-          </>
-        )}
-      </Button>
+      <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+        <Button
+          type="submit"
+          variant="gradient"
+          size="lg"
+          className="w-full sm:w-auto group"
+          disabled={status === "submitting"}
+        >
+          {status === "submitting" ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Sending...
+            </>
+          ) : (
+            <>
+              {ctaVariants.contact.primary}
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </>
+          )}
+        </Button>
+        <p className="text-xs text-muted-foreground">
+          No pitch decks. No pressure. Just a real conversation.
+        </p>
+      </div>
     </motion.form>
   );
 }

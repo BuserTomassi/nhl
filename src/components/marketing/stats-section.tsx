@@ -3,20 +3,7 @@
 import { useRef } from "react";
 import { motion, useInView, useSpring, useTransform } from "framer-motion";
 import { SectionHeading } from "./section-heading";
-
-interface Stat {
-  value: number;
-  suffix?: string;
-  prefix?: string;
-  label: string;
-}
-
-const stats: Stat[] = [
-  { value: 50, suffix: "+", label: "Industry Partners" },
-  { value: 500, suffix: "+", label: "Leadership Connections" },
-  { value: 25, suffix: "+", label: "Years Combined Experience" },
-  { value: 100, suffix: "%", label: "Client Satisfaction" },
-];
+import { stats } from "@/data/social-proof";
 
 function AnimatedNumber({ value, suffix = "", prefix = "" }: { value: number; suffix?: string; prefix?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -59,7 +46,7 @@ export function StatsSection() {
       <div className="container relative z-10">
         <SectionHeading
           eyebrow="By The Numbers"
-          title="Trusted by Leaders Worldwide"
+          title="Proof, Not Promises"
           className="text-white [&_p]:text-white/80 [&_h2]:text-white"
         />
 
@@ -71,7 +58,7 @@ export function StatsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="text-center"
+              className="text-center group"
             >
               <div className="text-4xl sm:text-5xl lg:text-6xl font-headline font-bold text-white mb-2">
                 <AnimatedNumber
@@ -80,14 +67,29 @@ export function StatsSection() {
                   prefix={stat.prefix}
                 />
               </div>
-              <p className="text-white/70 text-sm sm:text-base font-medium">
+              <p className="text-white/90 text-sm sm:text-base font-semibold mb-1">
                 {stat.label}
               </p>
+              {stat.context && (
+                <p className="text-white/60 text-xs sm:text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  {stat.context}
+                </p>
+              )}
             </motion.div>
           ))}
         </div>
+
+        {/* Trust reinforcement */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ delay: 0.6 }}
+          viewport={{ once: true }}
+          className="mt-12 text-center text-white/70 text-sm"
+        >
+          Based on client satisfaction surveys and placement outcomes since 2020
+        </motion.p>
       </div>
     </section>
   );
 }
-
