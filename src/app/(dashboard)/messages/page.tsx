@@ -45,7 +45,7 @@ export default async function MessagesPage({ searchParams }: MessagesPageProps) 
           <MessageCircle className="h-12 w-12 mx-auto mb-4 text-muted-foreground/50" />
           <h3 className="font-medium text-lg">No conversations yet</h3>
           <p className="text-muted-foreground mt-1">
-            Start a conversation by visiting a member's profile
+            Start a conversation by visiting a member&apos;s profile
           </p>
         </div>
       ) : (

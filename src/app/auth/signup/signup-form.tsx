@@ -149,14 +149,14 @@ export function SignupForm({
 
       {!isInvited && (
         <p className="text-xs text-center text-muted-foreground">
-          NHL is an invite-only community. Submit your request and we'll review
+          NHL is an invite-only community. Submit your request and we&apos;ll review
           your application.
         </p>
       )}
 
       {isInvited && invitedTier && (
         <p className="text-xs text-center text-muted-foreground">
-          You'll join as a {invitedTier} member with immediate access to
+          You&apos;ll join as a {invitedTier} member with immediate access to
           exclusive content and community.
         </p>
       )}

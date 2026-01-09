@@ -179,6 +179,7 @@ export function MessageThread({
             size="icon"
             disabled={isPending || !newMessage.trim()}
             className="shrink-0 h-11 w-11"
+            aria-label="Send message"
           >
             {isPending ? (
               <Loader2 className="h-4 w-4 animate-spin" />

@@ -57,7 +57,7 @@ export function RsvpButton({
       <div className="space-y-2">
         <div className="flex items-center justify-center gap-2 py-2 text-green-600 dark:text-green-400">
           <CheckCircle className="h-5 w-5" />
-          <span className="font-medium">You're registered!</span>
+          <span className="font-medium">You&apos;re registered!</span>
         </div>
         <Button
           variant="outline"

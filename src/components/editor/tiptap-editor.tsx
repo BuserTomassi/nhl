@@ -112,6 +112,8 @@ export function TiptapEditor({
             className="h-8 w-8"
             onClick={() => editor.chain().focus().toggleBold().run()}
             data-active={editor.isActive("bold")}
+            aria-label="Bold"
+            aria-pressed={editor.isActive("bold")}
           >
             <Bold className="h-4 w-4" />
           </Button>
@@ -122,6 +124,8 @@ export function TiptapEditor({
             className="h-8 w-8"
             onClick={() => editor.chain().focus().toggleItalic().run()}
             data-active={editor.isActive("italic")}
+            aria-label="Italic"
+            aria-pressed={editor.isActive("italic")}
           >
             <Italic className="h-4 w-4" />
           </Button>
@@ -133,6 +137,8 @@ export function TiptapEditor({
             className="h-8 w-8"
             onClick={() => editor.chain().focus().toggleBulletList().run()}
             data-active={editor.isActive("bulletList")}
+            aria-label="Bullet list"
+            aria-pressed={editor.isActive("bulletList")}
           >
             <List className="h-4 w-4" />
           </Button>
@@ -143,6 +149,8 @@ export function TiptapEditor({
             className="h-8 w-8"
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
             data-active={editor.isActive("orderedList")}
+            aria-label="Numbered list"
+            aria-pressed={editor.isActive("orderedList")}
           >
             <ListOrdered className="h-4 w-4" />
           </Button>
@@ -153,6 +161,8 @@ export function TiptapEditor({
             className="h-8 w-8"
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
             data-active={editor.isActive("blockquote")}
+            aria-label="Block quote"
+            aria-pressed={editor.isActive("blockquote")}
           >
             <Quote className="h-4 w-4" />
           </Button>
@@ -163,6 +173,8 @@ export function TiptapEditor({
             className="h-8 w-8"
             onClick={setLink}
             data-active={editor.isActive("link")}
+            aria-label="Insert link"
+            aria-pressed={editor.isActive("link")}
           >
             <LinkIcon className="h-4 w-4" />
           </Button>
@@ -174,6 +186,7 @@ export function TiptapEditor({
             className="h-8 w-8"
             onClick={() => editor.chain().focus().undo().run()}
             disabled={!editor.can().undo()}
+            aria-label="Undo"
           >
             <Undo className="h-4 w-4" />
           </Button>
@@ -184,6 +197,7 @@ export function TiptapEditor({
             className="h-8 w-8"
             onClick={() => editor.chain().focus().redo().run()}
             disabled={!editor.can().redo()}
+            aria-label="Redo"
           >
             <Redo className="h-4 w-4" />
           </Button>

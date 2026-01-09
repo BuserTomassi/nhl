@@ -23,7 +23,7 @@ const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(
 );
 Avatar.displayName = "Avatar";
 
-interface AvatarImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {}
+type AvatarImageProps = React.ImgHTMLAttributes<HTMLImageElement>;
 
 const AvatarImage = React.forwardRef<HTMLImageElement, AvatarImageProps>(
   ({ className, src, alt = "", ...props }, ref) => {
@@ -48,7 +48,7 @@ const AvatarImage = React.forwardRef<HTMLImageElement, AvatarImageProps>(
 );
 AvatarImage.displayName = "AvatarImage";
 
-interface AvatarFallbackProps extends React.HTMLAttributes<HTMLSpanElement> {}
+type AvatarFallbackProps = React.HTMLAttributes<HTMLSpanElement>;
 
 const AvatarFallback = React.forwardRef<HTMLSpanElement, AvatarFallbackProps>(
   ({ className, children, ...props }, ref) => (

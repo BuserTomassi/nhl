@@ -28,7 +28,7 @@ CREATE TYPE notification_type AS ENUM (
 -- ============================================================================
 
 CREATE TABLE notifications (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   profile_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
   type notification_type NOT NULL,
   title TEXT NOT NULL,
@@ -51,7 +51,7 @@ CREATE INDEX idx_notifications_type ON notifications(type);
 -- ============================================================================
 
 CREATE TABLE conversations (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
@@ -66,7 +66,7 @@ CREATE TRIGGER conversations_updated_at
 -- ============================================================================
 
 CREATE TABLE conversation_participants (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   conversation_id UUID NOT NULL REFERENCES conversations(id) ON DELETE CASCADE,
   profile_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
   last_read_at TIMESTAMPTZ,
@@ -83,7 +83,7 @@ CREATE INDEX idx_conv_participants_profile ON conversation_participants(profile_
 -- ============================================================================
 
 CREATE TABLE messages (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   conversation_id UUID NOT NULL REFERENCES conversations(id) ON DELETE CASCADE,
   sender_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
   content JSONB NOT NULL, -- TipTap JSON content

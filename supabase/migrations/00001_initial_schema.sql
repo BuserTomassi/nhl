@@ -9,8 +9,8 @@
 -- ============================================================================
 
 -- Enable required extensions
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE EXTENSION IF NOT EXISTS "pg_trgm"; -- For fuzzy text search
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";  -- For gen_random_uuid() and gen_random_bytes()
+CREATE EXTENSION IF NOT EXISTS "pg_trgm";   -- For fuzzy text search
 
 -- ============================================================================
 -- ENUMS
@@ -151,7 +151,7 @@ CREATE POLICY "profiles_admin_update" ON profiles
 -- ============================================================================
 
 CREATE TABLE partners (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   profile_id UUID REFERENCES profiles(id) ON DELETE SET NULL,
   name TEXT NOT NULL,
   slug TEXT UNIQUE NOT NULL,
@@ -202,12 +202,12 @@ CREATE POLICY "partners_admin_all" ON partners
 -- ============================================================================
 
 CREATE TABLE invitations (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   email TEXT NOT NULL,
   tier membership_tier NOT NULL,
   role user_role NOT NULL DEFAULT 'member',
   invited_by UUID REFERENCES profiles(id) ON DELETE SET NULL,
-  token TEXT UNIQUE NOT NULL DEFAULT encode(gen_random_bytes(32), 'hex'),
+  token TEXT UNIQUE NOT NULL DEFAULT encode(extensions.gen_random_bytes(32), 'hex'),
   status invitation_status NOT NULL DEFAULT 'pending',
   message TEXT,
   expires_at TIMESTAMPTZ NOT NULL DEFAULT (NOW() + INTERVAL '7 days'),

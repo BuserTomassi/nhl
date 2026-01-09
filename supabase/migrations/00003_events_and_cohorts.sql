@@ -24,7 +24,7 @@ CREATE TYPE resource_type AS ENUM ('document', 'video', 'link', 'template');
 -- ============================================================================
 
 CREATE TABLE cohorts (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL,
   slug TEXT UNIQUE NOT NULL,
   description TEXT,
@@ -60,7 +60,7 @@ ALTER TABLE spaces
 -- ============================================================================
 
 CREATE TABLE cohort_members (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   cohort_id UUID NOT NULL REFERENCES cohorts(id) ON DELETE CASCADE,
   profile_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
   status cohort_member_status NOT NULL DEFAULT 'active',
@@ -98,7 +98,7 @@ CREATE TRIGGER cohort_members_count
 -- ============================================================================
 
 CREATE TABLE events (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   space_id UUID REFERENCES spaces(id) ON DELETE SET NULL,
   title TEXT NOT NULL,
   description TEXT,
@@ -124,7 +124,7 @@ CREATE INDEX idx_events_space ON events(space_id);
 CREATE INDEX idx_events_starts ON events(starts_at);
 CREATE INDEX idx_events_tier ON events(tier_required);
 CREATE INDEX idx_events_published ON events(is_published) WHERE is_published = true;
-CREATE INDEX idx_events_upcoming ON events(starts_at) WHERE starts_at > NOW() AND is_published = true;
+CREATE INDEX idx_events_upcoming ON events(starts_at) WHERE is_published = true;
 CREATE INDEX idx_events_created_by ON events(created_by);
 
 CREATE TRIGGER events_updated_at
@@ -137,7 +137,7 @@ CREATE TRIGGER events_updated_at
 -- ============================================================================
 
 CREATE TABLE event_attendees (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   event_id UUID NOT NULL REFERENCES events(id) ON DELETE CASCADE,
   profile_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
   status rsvp_status NOT NULL DEFAULT 'registered',
@@ -184,7 +184,7 @@ CREATE TRIGGER event_attendees_count
 -- ============================================================================
 
 CREATE TABLE resources (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   space_id UUID REFERENCES spaces(id) ON DELETE SET NULL,
   cohort_id UUID REFERENCES cohorts(id) ON DELETE SET NULL,
   title TEXT NOT NULL,

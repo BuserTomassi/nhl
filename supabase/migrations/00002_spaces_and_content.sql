@@ -23,7 +23,7 @@ CREATE TYPE space_member_role AS ENUM ('member', 'moderator', 'admin');
 -- ============================================================================
 
 CREATE TABLE spaces (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL,
   slug TEXT UNIQUE NOT NULL,
   description TEXT,
@@ -58,7 +58,7 @@ CREATE TRIGGER spaces_updated_at
 -- ============================================================================
 
 CREATE TABLE space_members (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   space_id UUID NOT NULL REFERENCES spaces(id) ON DELETE CASCADE,
   profile_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
   role space_member_role NOT NULL DEFAULT 'member',
@@ -95,7 +95,7 @@ CREATE TRIGGER space_members_count
 -- ============================================================================
 
 CREATE TABLE posts (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   space_id UUID NOT NULL REFERENCES spaces(id) ON DELETE CASCADE,
   author_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
   title TEXT,
@@ -144,7 +144,7 @@ CREATE TRIGGER posts_space_count
 -- ============================================================================
 
 CREATE TABLE comments (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   post_id UUID NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
   author_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
   parent_id UUID REFERENCES comments(id) ON DELETE CASCADE, -- For nested replies
@@ -189,7 +189,7 @@ CREATE TRIGGER comments_post_count
 -- ============================================================================
 
 CREATE TABLE likes (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   profile_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
   post_id UUID REFERENCES posts(id) ON DELETE CASCADE,
   comment_id UUID REFERENCES comments(id) ON DELETE CASCADE,

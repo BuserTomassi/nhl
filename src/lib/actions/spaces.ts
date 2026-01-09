@@ -15,10 +15,16 @@ const createSpaceSchema = z.object({
   icon: z.string().max(10).optional(),
 });
 
+// TipTap JSON content schema
+const tiptapContentSchema = z.object({
+  type: z.literal("doc"),
+  content: z.array(z.record(z.unknown())).optional(),
+}).passthrough();
+
 const createPostSchema = z.object({
   spaceId: z.string().uuid(),
   title: z.string().max(200).optional(),
-  content: z.any(), // TipTap JSON
+  content: tiptapContentSchema,
   contentText: z.string(),
 });
 

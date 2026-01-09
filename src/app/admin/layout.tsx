@@ -34,7 +34,7 @@ export default async function AdminLayout({
       <DashboardHeader profile={profile} />
       <div className="flex">
         <AdminNav />
-        <main className="flex-1 p-6 lg:p-8">{children}</main>
+        <main id="main-content" className="flex-1 p-6 lg:p-8">{children}</main>
       </div>
     </div>
   );

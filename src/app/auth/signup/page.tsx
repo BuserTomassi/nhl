@@ -34,7 +34,7 @@ export default async function SignupPage({
             {invitation ? (
               <div className="space-y-2">
                 <p className="text-muted-foreground">
-                  You've been invited to join as a{" "}
+                  You&apos;ve been invited to join as a{" "}
                   <Badge variant="secondary" className="capitalize">
                     {invitation.tier}
                   </Badge>{" "}
@@ -42,7 +42,7 @@ export default async function SignupPage({
                 </p>
                 {invitation.message && (
                   <p className="text-sm italic text-muted-foreground">
-                    "{invitation.message}"
+                    &ldquo;{invitation.message}&rdquo;
                   </p>
                 )}
               </div>

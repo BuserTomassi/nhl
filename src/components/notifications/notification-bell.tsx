@@ -21,9 +21,11 @@ export function NotificationBell() {
         size="icon"
         onClick={() => setIsOpen(!isOpen)}
         className="relative"
+        aria-label={unreadCount > 0 ? `Notifications (${unreadCount} unread)` : "Notifications"}
+        aria-expanded={isOpen}
+        aria-haspopup="true"
       >
         <Bell className="h-5 w-5" />
-        <span className="sr-only">Notifications</span>
         {unreadCount > 0 && (
           <span className="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full bg-primary text-[10px] font-medium text-primary-foreground flex items-center justify-center">
             {unreadCount > 9 ? "9+" : unreadCount}
