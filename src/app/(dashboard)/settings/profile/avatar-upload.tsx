@@ -30,6 +30,11 @@ export function AvatarUpload({ profile }: AvatarUploadProps) {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Revoke any existing object URL to prevent memory leaks
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
+
     // Preview
     const objectUrl = URL.createObjectURL(file);
     setPreviewUrl(objectUrl);
@@ -44,10 +49,14 @@ export function AvatarUpload({ profile }: AvatarUploadProps) {
 
       if (!result.success) {
         setError(result.error || "Upload failed");
+        // Revoke object URL before clearing preview
+        URL.revokeObjectURL(objectUrl);
         setPreviewUrl(null);
       }
     } catch {
       setError("An error occurred during upload");
+      // Revoke object URL before clearing preview
+      URL.revokeObjectURL(objectUrl);
       setPreviewUrl(null);
     } finally {
       setIsUploading(false);

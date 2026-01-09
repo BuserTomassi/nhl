@@ -126,10 +126,14 @@ export async function rsvpToEvent(eventId: string): Promise<EventResult> {
       return { success: false, error: "Already registered for this event" };
     }
     // Update existing registration
-    await supabase
+    const { error } = await supabase
       .from("event_attendees")
       .update({ status: "registered" })
       .eq("id", existing.id);
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
   } else {
     // Create new registration
     const { error } = await supabase.from("event_attendees").insert({
