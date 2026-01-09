@@ -8,9 +8,16 @@ import { motion } from "framer-motion";
 interface LogoProps {
   className?: string;
   showText?: boolean;
+  size?: "sm" | "md" | "lg";
 }
 
-export function Logo({ className, showText = true }: LogoProps) {
+const sizeClasses = {
+  sm: "h-8 sm:h-9",
+  md: "h-10 sm:h-12",
+  lg: "h-12 sm:h-14",
+};
+
+export function Logo({ className, showText = true, size = "md" }: LogoProps) {
   return (
     <Link href="/" className={cn("group flex items-center gap-2.5", className)}>
       <motion.div
@@ -25,7 +32,7 @@ export function Logo({ className, showText = true }: LogoProps) {
           alt="Next Horizon Leadership"
           width={36}
           height={40}
-          className="relative h-10 w-auto sm:h-12"
+          className={cn("relative w-auto", sizeClasses[size])}
           priority
         />
       </motion.div>

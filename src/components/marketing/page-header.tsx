@@ -6,9 +6,11 @@ import { NoiseOverlay, Spotlight } from "@/components/effects";
 interface PageHeaderProps {
   title: string;
   subtitle?: string;
+  description?: string;
 }
 
-export function PageHeader({ title, subtitle }: PageHeaderProps) {
+export function PageHeader({ title, subtitle, description }: PageHeaderProps) {
+  const displaySubtitle = subtitle || description;
   return (
     <section className="relative isolate pt-32 sm:pt-36 pb-16 sm:pb-20 overflow-hidden">
       {/* Deep dark base */}
@@ -234,14 +236,14 @@ export function PageHeader({ title, subtitle }: PageHeaderProps) {
         >
           {title}
         </motion.h1>
-        {subtitle && (
+        {displaySubtitle && (
           <motion.p
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] as const }}
             className="mt-5 max-w-2xl text-lg sm:text-xl text-slate-200/90 leading-relaxed"
           >
-            {subtitle}
+            {displaySubtitle}
           </motion.p>
         )}
       </div>
