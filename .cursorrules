@@ -1,0 +1,235 @@
+# Next Horizon Leadership Platform - Cursor Rules
+
+## Project Overview
+
+NHL is a tiered community platform for executive HR leaders (CHROs, CEOs, talent leaders).
+Built with Next.js 16 App Router, Supabase (auth/db/storage), deployed on Vercel.
+
+### Membership Tiers (ascending access)
+- **Silver**: Free tier, limited access
+- **Gold**: Paid tier, full public access
+- **Platinum**: Invite-only, cohort-based learning
+- **Diamond**: Invite-only, top executives
+
+## Tech Stack (DO NOT deviate without discussion)
+
+| Layer | Technology |
+|-------|------------|
+| Framework | Next.js 16 with App Router |
+| React | v19 with Server Components preferred |
+| Styling | Tailwind CSS 4 + CSS variables (OKLCH) |
+| UI Library | shadcn/ui (new-york style) |
+| Backend | Supabase (PostgreSQL, Auth, Storage, Realtime) |
+| Forms | react-hook-form + zod |
+| Animation | Framer Motion |
+| Testing | Vitest + Testing Library |
+| Payments | Stripe (future) |
+
+## Architecture Rules
+
+### File Structure
+
+```
+src/
+├── app/                    # Next.js App Router pages
+│   └── (auth)/            # Authenticated route group
+│   └── (marketing)/       # Public marketing pages
+│   └── (dashboard)/       # Member dashboard
+│   └── api/               # API routes (webhooks only)
+├── components/
+│   ├── ui/                # shadcn primitives (DO NOT modify)
+│   ├── forms/             # Form components with validation
+│   ├── layout/            # Header, Footer, Navigation
+│   ├── marketing/         # Landing page components
+│   ├── dashboard/         # Member dashboard components
+│   ├── spaces/            # Community spaces components
+│   ├── partners/          # Partner directory components
+│   ├── effects/           # Visual effects (parallax, noise)
+│   ├── motion/            # Animation wrappers
+│   └── seo/               # Structured data components
+├── lib/
+│   ├── constants.ts       # Shared config (SITE_CONFIG)
+│   ├── utils.ts           # Utility functions (cn helper)
+│   ├── schemas/           # Zod validation schemas
+│   └── supabase/          # Supabase client setup
+├── types/                 # Shared TypeScript types
+├── hooks/                 # Custom React hooks
+└── data/                  # Static data and copy
+```
+
+### Component Conventions
+
+1. **Server Components by default** - Only add "use client" when needed
+2. **One component per file** - Named exports preferred
+3. **Barrel exports** via `index.ts` in each component directory
+4. **Props interfaces** - Define inline or export from component file
+5. **Use existing patterns** - Reference contact-form.tsx for forms
+
+### Naming Conventions
+
+- **Files**: kebab-case (`partner-directory.tsx`)
+- **Components**: PascalCase (`PartnerDirectory`)
+- **Hooks**: camelCase with `use` prefix (`useSpaceMembership`)
+- **Types**: PascalCase with suffixes (`UserProfile`, `SpaceWithMembers`)
+- **Database tables**: snake_case (`space_members`)
+
+## Supabase Rules (CRITICAL)
+
+### Database Schema
+
+- **Always use migrations** - Never modify schema in dashboard
+- Store migrations in `supabase/migrations/`
+- Run `npx supabase gen types typescript` after schema changes
+
+### Row Level Security (RLS)
+
+- **RLS is mandatory** on all tables with user data
+- Create policies BEFORE inserting data
+- Test policies with different tier levels
+- Use `auth.uid()` for user identification
+
+### Client Usage
+
+```typescript
+// Server Components & Server Actions
+import { createClient } from "@/lib/supabase/server";
+
+// Client Components (only when necessary)
+import { createClient } from "@/lib/supabase/client";
+```
+
+### Type Safety
+
+- Import types from `@/lib/supabase/types` after generation
+- Use `Database` type for full type safety
+
+## TypeScript Rules
+
+- **Strict mode enabled** (already configured)
+- **No `any`** - Use `unknown` and narrow types
+- **No non-null assertions** (`!`) - Handle undefined explicitly
+- **Prefer interfaces** for object shapes, types for unions
+- **Use `satisfies`** for type checking object literals
+- **Import types** from `@/types` for shared domain types
+
+## Security Rules (CRITICAL for executive users)
+
+1. **Never expose tier logic client-side** - All tier checks via RLS or server
+2. **Validate on server** - Never trust client-side tier claims
+3. **Use Supabase Auth** - No custom auth implementations
+4. **Magic links preferred** - Executives don't want passwords
+5. **Input sanitization** - Use Zod schemas on all inputs
+6. **Service role key** - NEVER expose in client code
+
+## API & Data Fetching
+
+1. **Server Components** - Fetch data directly with Supabase server client
+2. **Server Actions** - For mutations (forms, updates, deletes)
+3. **API Routes** - Only for webhooks and external integrations
+4. **No client-side fetching** unless real-time updates required
+
+### Server Action Pattern
+
+```typescript
+"use server";
+
+import { createClient } from "@/lib/supabase/server";
+import { revalidatePath } from "next/cache";
+import { z } from "zod";
+
+const schema = z.object({ /* ... */ });
+
+export async function createSpace(formData: FormData) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  
+  if (!user) throw new Error("Unauthorized");
+  
+  const parsed = schema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { error: parsed.error.flatten() };
+  
+  // ... mutation logic
+  revalidatePath("/spaces");
+}
+```
+
+## Styling Rules
+
+1. **Use existing CSS variables** from `globals.css`
+2. **Use `cn()` helper** for conditional classes
+3. **Prefer component classes** (`card-surface`, `btn-gradient`, `glass`)
+4. **Dark mode via CSS variables** - Don't hardcode colors
+5. **Animations** - Use existing motion components or Framer Motion
+
+### Existing Utility Classes
+
+- `card-surface`, `card-premium`, `card-lift` - Card styles
+- `btn-gradient`, `btn-glass`, `btn-outline-glow` - Button variants
+- `glass`, `glass-strong` - Glassmorphism effects
+- `text-gradient`, `text-gradient-brand` - Gradient text
+- `section-light`, `section-dark-mesh` - Section backgrounds
+
+## Testing Rules
+
+1. **Test user-facing behavior** not implementation details
+2. **Mock Supabase client** in tests
+3. **Test RLS policies** separately with SQL tests
+4. **Use Testing Library queries** in priority order:
+   - `getByRole` > `getByLabelText` > `getByText`
+
+## Performance Rules
+
+1. **Lazy load** heavy components (video players, rich text editors)
+2. **Use Suspense** boundaries with loading.tsx files
+3. **Optimize images** with next/image
+4. **Pagination** - Never load unbounded lists
+5. **Real-time subscriptions** - Unsubscribe on cleanup
+
+## Accessibility Rules
+
+1. **Semantic HTML** - Use proper elements (button, nav, main)
+2. **Keyboard navigation** - All interactive elements accessible
+3. **Focus management** - Trap focus in modals
+4. **ARIA labels** - Provide for icon-only buttons
+5. **Skip link** - Already implemented in layout
+6. **Color contrast** - WCAG AA minimum
+
+## What NOT to Do
+
+- ❌ Don't bypass RLS with service role key in client code
+- ❌ Don't store tier in localStorage/cookies
+- ❌ Don't modify shadcn components directly - extend them
+- ❌ Don't use `getServerSideProps` - This is App Router
+- ❌ Don't put secrets in client components
+- ❌ Don't ignore loading/error states
+- ❌ Don't create redundant utilities (check lib/utils.ts first)
+- ❌ Don't hardcode URLs (use SITE_CONFIG from constants)
+- ❌ Don't skip Zod validation on form inputs
+- ❌ Don't add new dependencies without checking existing ones
+
+## Before Each Feature
+
+1. Check if similar pattern exists in codebase
+2. Review `globals.css` for existing utility classes
+3. Plan database schema with RLS policies FIRST
+4. Consider all 4 tier levels in access logic
+5. Write types before implementation
+6. Add to relevant documentation
+
+## Reference Files
+
+- Forms: `src/components/forms/contact-form.tsx`
+- Animation: `src/components/motion/fade-in.tsx`
+- Effects: `src/components/effects/parallax-background.tsx`
+- Styling: `src/app/globals.css`
+- Types: `src/types/index.ts`
+- Constants: `src/lib/constants.ts`
+- Schemas: `src/lib/schemas/index.ts`
+
+## Documentation
+
+All major decisions and patterns are documented in:
+- `docs/ARCHITECTURE.md` - System design
+- `docs/SUPABASE.md` - Database patterns
+- `docs/TIERS.md` - Permission matrix
+- `docs/CONTRIBUTING.md` - Development guidelines

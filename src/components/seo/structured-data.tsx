@@ -1,30 +1,27 @@
-const BASE_URL = "https://www.nexthorizonleadership.com";
+import { SITE_CONFIG, OG_IMAGE, LOGO, SOCIAL_LINKS } from "@/lib/constants";
 
 // Organization Schema - Company identity for rich snippets
 export function OrganizationSchema() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "@id": `${BASE_URL}/#organization`,
-    name: "Next Horizon Leadership",
-    url: BASE_URL,
+    "@id": `${SITE_CONFIG.url}/#organization`,
+    name: SITE_CONFIG.name,
+    url: SITE_CONFIG.url,
     logo: {
       "@type": "ImageObject",
-      url: `${BASE_URL}/images/logo.svg`,
-      width: 164,
-      height: 184,
+      url: `${SITE_CONFIG.url}${LOGO.url}`,
+      width: LOGO.width,
+      height: LOGO.height,
     },
-    image: `${BASE_URL}/images/og.jpg`,
-    description:
-      "Next Horizon Leadership empowers forward-looking CEOs, CHROs, and talent leaders by connecting them with world-class search partners, leading AI innovators, and organizational experts.",
-    email: "hello@nexthorizonleadership.com",
-    foundingDate: "2024",
-    sameAs: [
-      // Add real social URLs when available
-    ],
+    image: `${SITE_CONFIG.url}${OG_IMAGE.url}`,
+    description: SITE_CONFIG.description,
+    email: SITE_CONFIG.email,
+    foundingDate: SITE_CONFIG.foundingYear,
+    sameAs: Object.values(SOCIAL_LINKS),
     contactPoint: {
       "@type": "ContactPoint",
-      email: "hello@nexthorizonleadership.com",
+      email: SITE_CONFIG.email,
       contactType: "customer service",
       availableLanguage: "English",
     },
@@ -43,15 +40,14 @@ export function WebSiteSchema() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "@id": `${BASE_URL}/#website`,
-    url: BASE_URL,
-    name: "Next Horizon Leadership",
-    description:
-      "Shaping the Future of Leadership. Connect with world-class search partners, AI innovators, and organizational experts.",
+    "@id": `${SITE_CONFIG.url}/#website`,
+    url: SITE_CONFIG.url,
+    name: SITE_CONFIG.name,
+    description: SITE_CONFIG.shortDescription,
     publisher: {
-      "@id": `${BASE_URL}/#organization`,
+      "@id": `${SITE_CONFIG.url}/#organization`,
     },
-    inLanguage: "en-US",
+    inLanguage: SITE_CONFIG.locale,
   };
 
   return (
@@ -72,13 +68,13 @@ export function ServiceSchema({ services }: { services: ServiceItem[] }) {
   const schema = {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
-    "@id": `${BASE_URL}/services/#service`,
-    name: "Next Horizon Leadership",
-    url: `${BASE_URL}/services`,
+    "@id": `${SITE_CONFIG.url}/services/#service`,
+    name: SITE_CONFIG.name,
+    url: `${SITE_CONFIG.url}/services`,
     description:
       "Executive Search, AI For Talent Advisory, Org Design, and Interim Leadership services.",
     provider: {
-      "@id": `${BASE_URL}/#organization`,
+      "@id": `${SITE_CONFIG.url}/#organization`,
     },
     areaServed: {
       "@type": "Place",
@@ -149,12 +145,12 @@ export function WebPageSchema({ title, description, url }: WebPageSchemaProps) {
     name: title,
     description: description,
     isPartOf: {
-      "@id": `${BASE_URL}/#website`,
+      "@id": `${SITE_CONFIG.url}/#website`,
     },
     about: {
-      "@id": `${BASE_URL}/#organization`,
+      "@id": `${SITE_CONFIG.url}/#organization`,
     },
-    inLanguage: "en-US",
+    inLanguage: SITE_CONFIG.locale,
   };
 
   return (
@@ -170,13 +166,13 @@ export function ContactPageSchema() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "ContactPage",
-    "@id": `${BASE_URL}/contact/#contactpage`,
-    url: `${BASE_URL}/contact`,
+    "@id": `${SITE_CONFIG.url}/contact/#contactpage`,
+    url: `${SITE_CONFIG.url}/contact`,
     name: "Contact Us",
     description:
       "Get in touch with Next Horizon Leadership. Tell us about your executive hire needs.",
     mainEntity: {
-      "@id": `${BASE_URL}/#organization`,
+      "@id": `${SITE_CONFIG.url}/#organization`,
     },
   };
 

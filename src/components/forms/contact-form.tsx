@@ -11,8 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { Loader2, CheckCircle, AlertCircle, ArrowRight } from "lucide-react";
-
-const FORMSPREE_ENDPOINT = "https://formspree.io/f/xykynnpq";
+import { API_ENDPOINTS } from "@/lib/constants";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -39,7 +38,7 @@ export function ContactForm() {
     setStatus("submitting");
 
     try {
-      const response = await fetch(FORMSPREE_ENDPOINT, {
+      const response = await fetch(API_ENDPOINTS.formspree, {
         method: "POST",
         body: JSON.stringify(data),
         headers: {

@@ -30,7 +30,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Header />
-      <main>
+      <main id="main-content">
         <Suspense fallback={<SkeletonHero />}>
           <Hero />
         </Suspense>

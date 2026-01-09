@@ -1,8 +1,4 @@
-export interface NavigationLink {
-  href: string;
-  label: string;
-  isPrimary?: boolean;
-}
+import type { NavigationLink } from "@/types";
 
 export const navigationLinks: NavigationLink[] = [
   { href: "/services", label: "Services" },

@@ -5,21 +5,20 @@ import { PageHeader, SectionHeading } from "@/components/marketing";
 import { ContactForm } from "@/components/forms";
 import { FadeIn } from "@/components/motion";
 import { ContactPageSchema, BreadcrumbSchema } from "@/components/seo";
-
-const BASE_URL = "https://www.nexthorizonleadership.com";
+import { SITE_CONFIG } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Contact",
   description:
     "Get in touch with Next Horizon Leadership. Tell us about your executive hire needs.",
   alternates: {
-    canonical: `${BASE_URL}/contact`,
+    canonical: `${SITE_CONFIG.url}/contact`,
   },
   openGraph: {
-    title: "Contact | Next Horizon Leadership",
+    title: `Contact | ${SITE_CONFIG.name}`,
     description:
       "Get in touch with Next Horizon Leadership. Tell us about your executive hire needs.",
-    url: `${BASE_URL}/contact`,
+    url: `${SITE_CONFIG.url}/contact`,
   },
 };
 
@@ -46,8 +45,8 @@ const contactInfo = [
 
 export default function ContactPage() {
   const breadcrumbs = [
-    { name: "Home", url: BASE_URL },
-    { name: "Contact", url: `${BASE_URL}/contact` },
+    { name: "Home", url: SITE_CONFIG.url },
+    { name: "Contact", url: `${SITE_CONFIG.url}/contact` },
   ];
 
   return (
@@ -55,7 +54,7 @@ export default function ContactPage() {
       <ContactPageSchema />
       <BreadcrumbSchema items={breadcrumbs} />
       <Header />
-      <main>
+      <main id="main-content">
         <PageHeader
           title="Contact Us"
           subtitle="Tell us about your executive hire. We'll respond within one business day."

@@ -22,7 +22,7 @@ export default function Error({
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
       <Header />
-      <main className="flex-1 flex items-center justify-center pt-20">
+      <main id="main-content" className="flex-1 flex items-center justify-center pt-20">
         <div className="container max-w-2xl text-center px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

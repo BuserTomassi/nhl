@@ -1,20 +1,18 @@
 import type { Metadata } from "next";
 import { bricolageGrotesque, plusJakartaSans } from "@/lib/fonts";
+import { SITE_CONFIG, OG_IMAGE } from "@/lib/constants";
 import { ThemeProvider } from "@/components/theme-provider";
 import { OrganizationSchema, WebSiteSchema } from "@/components/seo";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
-const BASE_URL = "https://www.nexthorizonleadership.com";
-
 export const metadata: Metadata = {
-  metadataBase: new URL(BASE_URL),
+  metadataBase: new URL(SITE_CONFIG.url),
   title: {
-    default: "Next Horizon Leadership",
-    template: "%s | Next Horizon Leadership",
+    default: SITE_CONFIG.name,
+    template: `%s | ${SITE_CONFIG.name}`,
   },
-  description:
-    "Next Horizon Leadership empowers forward-looking CEOs, CHROs, and talent leaders by connecting them with world-class search partners, leading AI innovators, and organizational experts.",
+  description: SITE_CONFIG.description,
   keywords: [
     "executive search",
     "leadership",
@@ -27,35 +25,26 @@ export const metadata: Metadata = {
     "executive recruitment",
     "HR leadership",
   ],
-  authors: [{ name: "Next Horizon Leadership" }],
-  creator: "Next Horizon Leadership",
-  publisher: "Next Horizon Leadership",
+  authors: [{ name: SITE_CONFIG.name }],
+  creator: SITE_CONFIG.name,
+  publisher: SITE_CONFIG.name,
   alternates: {
-    canonical: BASE_URL,
+    canonical: SITE_CONFIG.url,
   },
   openGraph: {
-    title: "Next Horizon Leadership",
-    description:
-      "Shaping the Future of Leadership. Connect with world-class search partners, AI innovators, and organizational experts.",
-    url: BASE_URL,
-    siteName: "Next Horizon Leadership",
-    locale: "en_US",
+    title: SITE_CONFIG.name,
+    description: SITE_CONFIG.shortDescription,
+    url: SITE_CONFIG.url,
+    siteName: SITE_CONFIG.name,
+    locale: SITE_CONFIG.locale,
     type: "website",
-    images: [
-      {
-        url: "/images/og.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Next Horizon Leadership - Shaping the Future of Leadership",
-      },
-    ],
+    images: [OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Next Horizon Leadership",
-    description:
-      "Shaping the Future of Leadership. Connect with world-class search partners, AI innovators, and organizational experts.",
-    images: ["/images/og.jpg"],
+    title: SITE_CONFIG.name,
+    description: SITE_CONFIG.shortDescription,
+    images: [OG_IMAGE.url],
     // Add handles when social accounts are created
     // site: "@nexthorizonltd",
     // creator: "@nexthorizonltd",
@@ -87,6 +76,13 @@ export default function RootLayout({
       <body
         className={`${bricolageGrotesque.variable} ${plusJakartaSans.variable} antialiased`}
       >
+        {/* Skip to main content link for accessibility */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+        >
+          Skip to main content
+        </a>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

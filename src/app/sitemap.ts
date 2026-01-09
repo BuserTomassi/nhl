@@ -1,59 +1,58 @@
 import type { MetadataRoute } from "next";
-
-const baseUrl = "https://www.nexthorizonleadership.com";
+import { SITE_CONFIG } from "@/lib/constants";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes = [
     {
-      url: baseUrl,
+      url: SITE_CONFIG.url,
       lastModified: new Date(),
       changeFrequency: "weekly" as const,
       priority: 1,
     },
     {
-      url: `${baseUrl}/services`,
+      url: `${SITE_CONFIG.url}/services`,
       lastModified: new Date(),
       changeFrequency: "monthly" as const,
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/community`,
+      url: `${SITE_CONFIG.url}/community`,
       lastModified: new Date(),
       changeFrequency: "weekly" as const,
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/events`,
+      url: `${SITE_CONFIG.url}/events`,
       lastModified: new Date(),
       changeFrequency: "weekly" as const,
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/insights`,
+      url: `${SITE_CONFIG.url}/insights`,
       lastModified: new Date(),
       changeFrequency: "weekly" as const,
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/partners`,
+      url: `${SITE_CONFIG.url}/partners`,
       lastModified: new Date(),
       changeFrequency: "monthly" as const,
       priority: 0.7,
     },
     {
-      url: `${baseUrl}/contact`,
+      url: `${SITE_CONFIG.url}/contact`,
       lastModified: new Date(),
       changeFrequency: "monthly" as const,
       priority: 0.6,
     },
     {
-      url: `${baseUrl}/privacy`,
+      url: `${SITE_CONFIG.url}/privacy`,
       lastModified: new Date(),
       changeFrequency: "yearly" as const,
       priority: 0.3,
     },
     {
-      url: `${baseUrl}/terms`,
+      url: `${SITE_CONFIG.url}/terms`,
       lastModified: new Date(),
       changeFrequency: "yearly" as const,
       priority: 0.3,
