@@ -25,6 +25,7 @@ export interface AuthResult {
   success: boolean;
   error?: string;
   message?: string;
+  redirectTo?: string;
 }
 
 // ============================================================================
@@ -69,6 +70,58 @@ export async function signInWithMagicLink(
   return {
     success: true,
     message: "Check your email for the magic link!",
+  };
+}
+
+// ============================================================================
+// PASSWORD LOGIN (for development/testing)
+// ============================================================================
+
+/**
+ * Sign in with email and password
+ * Primarily used for testing with seed accounts
+ */
+export async function signInWithPassword(
+  _prevState: AuthResult | null,
+  formData: FormData
+): Promise<AuthResult> {
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+  const redirectTo = (formData.get("redirectTo") as string) || "/dashboard";
+
+  // Validate email
+  const parsed = emailSchema.safeParse(email);
+  if (!parsed.success) {
+    return {
+      success: false,
+      error: parsed.error.issues[0].message,
+    };
+  }
+
+  if (!password || password.length < 6) {
+    return {
+      success: false,
+      error: "Password must be at least 6 characters",
+    };
+  }
+
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email: parsed.data,
+    password,
+  });
+
+  if (error) {
+    return {
+      success: false,
+      error: error.message,
+    };
+  }
+
+  return {
+    success: true,
+    redirectTo,
   };
 }
 
