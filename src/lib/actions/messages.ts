@@ -33,7 +33,9 @@ export async function getConversations() {
   }
 
   // Use SECURITY DEFINER function to get conversations with participant details
-  const { data, error } = await supabase.rpc("get_user_conversations");
+  // Note: Type assertion needed until database types are regenerated
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data, error } = await (supabase.rpc as any)("get_user_conversations");
 
   if (error) {
     console.error("[getConversations] Error:", error);
@@ -226,7 +228,9 @@ export async function getConversation(conversationId: string) {
   }
 
   // Use SECURITY DEFINER function to get conversation with participant details
-  const { data, error } = await supabase.rpc("get_conversation_details", {
+  // Note: Type assertion needed until database types are regenerated
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data, error } = await (supabase.rpc as any)("get_conversation_details", {
     conv_id: conversationId,
   });
 

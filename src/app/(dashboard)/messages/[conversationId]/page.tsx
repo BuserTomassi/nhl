@@ -5,6 +5,7 @@ import { getConversation, getMessages } from "@/lib/actions/messages";
 import { MessageThread } from "@/components/messages/message-thread";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { TierBadge } from "@/components/dashboard/tier-badge";
+import type { MembershipTier } from "@/lib/supabase/types";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
@@ -66,7 +67,7 @@ export default async function ConversationPage({ params }: ConversationPageProps
               {otherUser?.full_name || "Member"}
             </h1>
             {otherUser?.tier && (
-              <TierBadge tier={otherUser.tier} size="sm" showIcon={false} />
+              <TierBadge tier={otherUser.tier as MembershipTier} size="sm" showIcon={false} />
             )}
           </div>
           {(otherUser?.title || otherUser?.company) && (

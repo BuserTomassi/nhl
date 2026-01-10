@@ -17,6 +17,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { config } from "dotenv";
 import { resolve } from "path";
+import type { Json } from "../src/lib/supabase/types";
 
 // Load environment variables from .env.local
 config({ path: resolve(process.cwd(), ".env.local") });
@@ -349,7 +350,7 @@ async function seedPostsData(
         space_id: spaceIdMap.get(post.spaceSlug)!,
         author_id: authorId,
         title: post.title,
-        content: post.content,
+        content: post.content as Json,
         content_text: post.content_text,
         is_pinned: post.is_pinned,
         is_locked: post.is_locked,
@@ -357,7 +358,7 @@ async function seedPostsData(
         comment_count: 0,
       };
     })
-    .filter((post) => post.author_id !== null);
+    .filter((post): post is typeof post & { author_id: string } => post.author_id !== null);
 
   if (postsToInsert.length === 0) {
     log("No posts to insert (no matching spaces or authors found).");
@@ -389,7 +390,7 @@ async function seedEventsData(
   const eventsToInsert = seedEvents.map((event) => ({
     title: event.title,
     description: event.description,
-    content: event.content,
+    content: event.content as Json,
     cover_image_url: event.cover_image_url,
     starts_at: event.starts_at.toISOString(),
     ends_at: event.ends_at?.toISOString() || null,
@@ -505,7 +506,7 @@ async function seedMessagesData(profileIdMap: Map<string, string>) {
     const messagesToInsert = conv.messages.map((msg) => ({
       conversation_id: conversationId,
       sender_id: participantIds[msg.senderIndex],
-      content: getMessageContent(msg.content_text),
+      content: getMessageContent(msg.content_text) as Json,
       content_text: msg.content_text,
       is_read: true, // Mark as read for seed data
       created_at: getMessageTimestamp(msg.minutesAgo).toISOString(),

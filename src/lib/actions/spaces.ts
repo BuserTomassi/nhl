@@ -18,7 +18,7 @@ const createSpaceSchema = z.object({
 // TipTap JSON content schema
 const tiptapContentSchema = z.object({
   type: z.literal("doc"),
-  content: z.array(z.record(z.unknown())).optional(),
+  content: z.array(z.record(z.string(), z.unknown())).optional(),
 }).passthrough();
 
 const createPostSchema = z.object({
@@ -253,7 +253,7 @@ export async function createPost(
       space_id: parsed.data.spaceId,
       author_id: user.id,
       title: parsed.data.title || null,
-      content: parsed.data.content,
+      content: parsed.data.content as Json,
       content_text: parsed.data.contentText,
     })
     .select()

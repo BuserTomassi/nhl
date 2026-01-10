@@ -37,9 +37,9 @@ export async function globalSearch(query: string): Promise<SearchResult[]> {
         id: m.id,
         type: "member" as const,
         title: m.full_name || "Member",
-        subtitle: m.title && m.company ? `${m.title} at ${m.company}` : m.company || m.title,
+        subtitle: (m.title && m.company ? `${m.title} at ${m.company}` : m.company || m.title) ?? undefined,
         href: `/members?search=${encodeURIComponent(m.full_name || "")}`,
-        imageUrl: m.avatar_url,
+        imageUrl: m.avatar_url ?? undefined,
       }))
     );
   }
@@ -58,7 +58,7 @@ export async function globalSearch(query: string): Promise<SearchResult[]> {
         id: s.id,
         type: "space" as const,
         title: s.name,
-        subtitle: s.description?.slice(0, 60) + (s.description && s.description.length > 60 ? "..." : ""),
+        subtitle: s.description ? s.description.slice(0, 60) + (s.description.length > 60 ? "..." : "") : undefined,
         href: `/spaces/${s.slug}`,
       }))
     );
@@ -123,9 +123,9 @@ export async function globalSearch(query: string): Promise<SearchResult[]> {
         id: p.id,
         type: "partner" as const,
         title: p.name,
-        subtitle: p.description?.slice(0, 60) + (p.description && p.description.length > 60 ? "..." : ""),
+        subtitle: p.description ? p.description.slice(0, 60) + (p.description.length > 60 ? "..." : "") : undefined,
         href: `/partners/${p.slug}`,
-        imageUrl: p.logo_url,
+        imageUrl: p.logo_url ?? undefined,
       }))
     );
   }

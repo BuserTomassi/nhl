@@ -16,7 +16,7 @@ export async function HeaderWrapper() {
   if (user) {
     const { data } = await supabase
       .from("profiles")
-      .select("id, full_name, email, avatar_url, tier, role")
+      .select("*")
       .eq("id", user.id)
       .single();
     profile = data;
