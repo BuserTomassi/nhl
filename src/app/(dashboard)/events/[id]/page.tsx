@@ -98,40 +98,42 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                 </p>
               ) : (
                 <div className="grid gap-3 sm:grid-cols-2">
-                  {attendees.map((attendee) => {
-                    const profile = attendee.profile;
-                    const initials = profile.full_name
-                      ? profile.full_name
-                          .split(" ")
-                          .map((n: string) => n[0])
-                          .join("")
-                          .toUpperCase()
-                          .slice(0, 2)
-                      : "?";
+                  {attendees
+                    .filter((attendee) => attendee.profile != null)
+                    .map((attendee) => {
+                      const profile = attendee.profile!;
+                      const initials = profile.full_name
+                        ? profile.full_name
+                            .split(" ")
+                            .map((n: string) => n[0])
+                            .join("")
+                            .toUpperCase()
+                            .slice(0, 2)
+                        : "?";
 
-                    return (
-                      <Link
-                        key={attendee.id}
-                        href={`/members/${profile.id}`}
-                        className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted"
-                      >
-                        <Avatar className="h-10 w-10">
-                          <AvatarImage src={profile.avatar_url || undefined} />
-                          <AvatarFallback className="bg-primary/10 text-primary">
-                            {initials}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="min-w-0">
-                          <p className="font-medium text-sm truncate">
-                            {profile.full_name || "Member"}
-                          </p>
-                          <p className="text-xs text-muted-foreground truncate">
-                            {profile.title || profile.company || ""}
-                          </p>
-                        </div>
-                      </Link>
-                    );
-                  })}
+                      return (
+                        <Link
+                          key={attendee.id}
+                          href={`/members/${profile.id}`}
+                          className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted"
+                        >
+                          <Avatar className="h-10 w-10">
+                            <AvatarImage src={profile.avatar_url || undefined} />
+                            <AvatarFallback className="bg-primary/10 text-primary">
+                              {initials}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="min-w-0">
+                            <p className="font-medium text-sm truncate">
+                              {profile.full_name || "Member"}
+                            </p>
+                            <p className="text-xs text-muted-foreground truncate">
+                              {profile.title || profile.company || ""}
+                            </p>
+                          </div>
+                        </Link>
+                      );
+                    })}
                 </div>
               )}
             </CardContent>
