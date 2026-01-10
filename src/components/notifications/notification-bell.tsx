@@ -82,15 +82,11 @@ export function NotificationBell() {
             {/* Footer */}
             {notifications.length > 10 && (
               <div className="p-2 border-t">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="w-full"
-                  asChild
-                  onClick={() => setIsOpen(false)}
-                >
-                  <Link href="/notifications">View all notifications</Link>
-                </Button>
+                <Link href="/notifications" onClick={() => setIsOpen(false)}>
+                  <Button variant="ghost" size="sm" className="w-full">
+                    View all notifications
+                  </Button>
+                </Link>
               </div>
             )}
           </div>

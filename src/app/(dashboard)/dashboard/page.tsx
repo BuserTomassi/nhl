@@ -103,12 +103,12 @@ export default async function DashboardPage() {
               <p className="text-sm mt-1">
                 Join a space to start participating in discussions
               </p>
-              <Button asChild className="mt-4">
-                <Link href="/spaces">
+              <Link href="/spaces">
+                <Button className="mt-4">
                   Explore Spaces
                   <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
+                </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>
@@ -125,9 +125,11 @@ export default async function DashboardPage() {
             <div className="text-center py-8 text-muted-foreground">
               <Calendar className="h-10 w-10 mx-auto mb-3 opacity-50" />
               <p className="text-sm">No upcoming events</p>
-              <Button variant="outline" size="sm" asChild className="mt-3">
-                <Link href="/events">View All Events</Link>
-              </Button>
+              <Link href="/events">
+                <Button variant="outline" size="sm" className="mt-3">
+                  View All Events
+                </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>

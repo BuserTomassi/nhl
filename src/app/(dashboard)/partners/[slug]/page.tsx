@@ -91,25 +91,25 @@ export default async function PartnerDetailPage({
               {/* Contact actions */}
               <div className="flex gap-3 mt-4">
                 {partner.website_url && (
-                  <Button asChild>
-                    <a
-                      href={partner.website_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                  <a
+                    href={partner.website_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Button>
                       <Globe className="mr-2 h-4 w-4" />
                       Visit Website
                       <ExternalLink className="ml-2 h-3 w-3" />
-                    </a>
-                  </Button>
+                    </Button>
+                  </a>
                 )}
                 {partner.contact_email && (
-                  <Button variant="outline" asChild>
-                    <a href={`mailto:${partner.contact_email}`}>
+                  <a href={`mailto:${partner.contact_email}`}>
+                    <Button variant="outline">
                       <Mail className="mr-2 h-4 w-4" />
                       Contact
-                    </a>
-                  </Button>
+                    </Button>
+                  </a>
                 )}
               </div>
             </div>

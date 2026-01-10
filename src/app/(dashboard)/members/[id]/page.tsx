@@ -71,24 +71,24 @@ export default async function MemberProfilePage({ params }: MemberProfilePagePro
 
               {/* Actions */}
               <div className="flex gap-3 mt-4 justify-center sm:justify-start">
-                <Button asChild>
-                  <Link href={`/messages?to=${member.id}`}>
+                <Link href={`/messages?to=${member.id}`}>
+                  <Button>
                     <MessageCircle className="mr-2 h-4 w-4" />
                     Message
-                  </Link>
-                </Button>
+                  </Button>
+                </Link>
 
                 {member.linkedin_url && (
-                  <Button variant="outline" asChild>
-                    <a
-                      href={member.linkedin_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                  <a
+                    href={member.linkedin_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Button variant="outline">
                       <Linkedin className="mr-2 h-4 w-4" />
                       LinkedIn
-                    </a>
-                  </Button>
+                    </Button>
+                  </a>
                 )}
               </div>
             </div>

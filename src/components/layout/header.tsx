@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Logo } from "./logo";
 import { MobileNav } from "./mobile-nav";
+import { UserNav } from "./user-nav";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { navigationLinks } from "@/data/navigation";
 import { cn } from "@/lib/utils";
@@ -109,8 +110,9 @@ export function Header() {
             })}
           </div>
 
-          {/* Right side: CTA + Theme toggle */}
+          {/* Right side: User nav + Theme toggle */}
           <div className="hidden md:flex items-center gap-3">
+            <UserNav />
             <div className="h-6 w-px bg-border" />
             <ThemeToggle />
           </div>

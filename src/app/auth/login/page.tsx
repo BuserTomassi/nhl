@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { LoginForm } from "./login-form";
-import Link from "next/link";
 import { Logo } from "@/components/layout/logo";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Sign In",
@@ -22,9 +22,7 @@ export default async function LoginPage({
       <div className="w-full max-w-md space-y-8">
         {/* Logo */}
         <div className="flex flex-col items-center space-y-4">
-          <Link href="/" className="inline-block">
-            <Logo size="lg" />
-          </Link>
+          <Logo size="lg" />
           <div className="text-center space-y-2">
             <h1 className="text-2xl font-bold tracking-tight">Welcome back</h1>
             <p className="text-muted-foreground">

@@ -1,9 +1,9 @@
 import { Metadata } from "next";
 import { SignupForm } from "./signup-form";
-import Link from "next/link";
 import { Logo } from "@/components/layout/logo";
 import { verifyInvitationToken } from "@/lib/actions/auth";
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Join",
@@ -24,9 +24,7 @@ export default async function SignupPage({
       <div className="w-full max-w-md space-y-8">
         {/* Logo */}
         <div className="flex flex-col items-center space-y-4">
-          <Link href="/" className="inline-block">
-            <Logo size="lg" />
-          </Link>
+          <Logo size="lg" />
           <div className="text-center space-y-2">
             <h1 className="text-2xl font-bold tracking-tight">
               {invitation ? "You're Invited" : "Request Access"}

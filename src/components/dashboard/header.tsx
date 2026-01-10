@@ -40,27 +40,25 @@ export function DashboardHeader({ profile }: DashboardHeaderProps) {
       <div className="flex h-full items-center justify-between px-4 lg:px-6">
         {/* Left side - Logo & Mobile menu */}
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon" className="lg:hidden">
+          <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Toggle menu">
             <Menu className="h-5 w-5" />
-            <span className="sr-only">Toggle menu</span>
           </Button>
-          <Link href="/dashboard" className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <Logo size="sm" />
-            <Badge variant={profile.tier} className="hidden sm:inline-flex">
+            <Badge variant={profile.tier} className="hidden sm:inline-flex capitalize">
               {profile.tier}
             </Badge>
-          </Link>
+          </div>
         </div>
 
         {/* Right side - Actions & User */}
         <div className="flex items-center gap-2">
           {/* Messages */}
-          <Button variant="ghost" size="icon" asChild>
-            <Link href="/messages">
+          <Link href="/messages">
+            <Button variant="ghost" size="icon" aria-label="Messages">
               <MessageCircle className="h-5 w-5" />
-              <span className="sr-only">Messages</span>
-            </Link>
-          </Button>
+            </Button>
+          </Link>
 
           {/* Notifications */}
           <Button variant="ghost" size="icon" className="relative">

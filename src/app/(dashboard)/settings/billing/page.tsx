@@ -117,11 +117,11 @@ export default async function BillingPage() {
                 <p className="text-sm text-muted-foreground mt-1">
                   Contact us to upgrade your membership.
                 </p>
-                <Button className="mt-4" asChild>
-                  <a href="mailto:hello@nexthorizonleadership.com">
+                <a href="mailto:hello@nexthorizonleadership.com">
+                  <Button className="mt-4">
                     Contact Us
-                  </a>
-                </Button>
+                  </Button>
+                </a>
               </div>
             )}
           </CardContent>
