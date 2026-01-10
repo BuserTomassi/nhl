@@ -75,7 +75,7 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
                       .join("")
                       .toUpperCase()
                       .slice(0, 2)
-                  : member.email[0].toUpperCase();
+                  : member.email?.[0]?.toUpperCase() ?? "?";
 
                 return (
                   <div

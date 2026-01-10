@@ -33,7 +33,7 @@ export default async function MemberProfilePage({ params }: MemberProfilePagePro
         .join("")
         .toUpperCase()
         .slice(0, 2)
-    : member.email[0].toUpperCase();
+    : member.email?.[0]?.toUpperCase() ?? "?";
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">

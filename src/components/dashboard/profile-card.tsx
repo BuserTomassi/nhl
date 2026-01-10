@@ -28,7 +28,7 @@ export function ProfileCard({
         .join("")
         .toUpperCase()
         .slice(0, 2)
-    : profile.email[0].toUpperCase();
+    : profile.email?.[0]?.toUpperCase() ?? "?";
 
   const avatarSizes = {
     sm: "h-8 w-8",

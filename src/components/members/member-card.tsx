@@ -17,7 +17,7 @@ export function MemberCard({ member }: MemberCardProps) {
         .join("")
         .toUpperCase()
         .slice(0, 2)
-    : member.email[0].toUpperCase();
+    : member.email?.[0]?.toUpperCase() ?? "?";
 
   return (
     <Link href={`/members/${member.id}`}>

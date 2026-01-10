@@ -33,7 +33,7 @@ export function DashboardHeader({ profile }: DashboardHeaderProps) {
         .join("")
         .toUpperCase()
         .slice(0, 2)
-    : profile.email[0].toUpperCase();
+    : profile.email?.[0]?.toUpperCase() ?? "?";
 
   return (
     <header className="sticky top-0 z-50 h-16 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">

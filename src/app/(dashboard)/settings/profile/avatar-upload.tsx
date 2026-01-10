@@ -24,7 +24,7 @@ export function AvatarUpload({ profile }: AvatarUploadProps) {
         .join("")
         .toUpperCase()
         .slice(0, 2)
-    : profile.email[0].toUpperCase();
+    : profile.email?.[0]?.toUpperCase() ?? "?";
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
