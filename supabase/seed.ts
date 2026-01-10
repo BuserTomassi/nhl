@@ -29,7 +29,10 @@ import {
   seedPosts,
   seedEvents,
   seedResources,
+  seedConversations,
   getAvatarUrl,
+  getMessageContent,
+  getMessageTimestamp,
 } from "./seed-data";
 
 import type { Database } from "../src/lib/supabase/database.types";
@@ -450,6 +453,81 @@ async function seedResourcesData(
   logSuccess(data?.length || 0, "resources");
 }
 
+/**
+ * Seed conversations and messages between users
+ */
+async function seedMessagesData(profileIdMap: Map<string, string>) {
+  logSection("Seeding Conversations & Messages");
+
+  let conversationCount = 0;
+  let messageCount = 0;
+
+  for (const conv of seedConversations) {
+    const [email1, email2] = conv.participantEmails;
+    const profileId1 = profileIdMap.get(email1);
+    const profileId2 = profileIdMap.get(email2);
+
+    if (!profileId1 || !profileId2) {
+      log(`Skipping conversation - missing profiles: ${email1}, ${email2}`);
+      continue;
+    }
+
+    // Create conversation
+    const { data: convData, error: convError } = await supabase
+      .from("conversations")
+      .insert({})
+      .select("id")
+      .single();
+
+    if (convError || !convData) {
+      logError(`Failed to create conversation for ${email1} & ${email2}`, convError);
+      continue;
+    }
+
+    const conversationId = convData.id;
+    conversationCount++;
+
+    // Add participants
+    const { error: partError } = await supabase
+      .from("conversation_participants")
+      .insert([
+        { conversation_id: conversationId, profile_id: profileId1 },
+        { conversation_id: conversationId, profile_id: profileId2 },
+      ]);
+
+    if (partError) {
+      logError(`Failed to add participants to conversation`, partError);
+      continue;
+    }
+
+    // Add messages
+    const participantIds = [profileId1, profileId2];
+    const messagesToInsert = conv.messages.map((msg) => ({
+      conversation_id: conversationId,
+      sender_id: participantIds[msg.senderIndex],
+      content: getMessageContent(msg.content_text),
+      content_text: msg.content_text,
+      is_read: true, // Mark as read for seed data
+      created_at: getMessageTimestamp(msg.minutesAgo).toISOString(),
+    }));
+
+    const { data: msgData, error: msgError } = await supabase
+      .from("messages")
+      .insert(messagesToInsert)
+      .select("id");
+
+    if (msgError) {
+      logError(`Failed to add messages to conversation`, msgError);
+      continue;
+    }
+
+    messageCount += msgData?.length || 0;
+  }
+
+  logSuccess(conversationCount, "conversations");
+  logSuccess(messageCount, "messages");
+}
+
 // ============================================================================
 // Main Execution
 // ============================================================================
@@ -476,6 +554,7 @@ async function main() {
   await seedPostsData(spaceIdMap, profileIdMap, adminProfileId);
   await seedEventsData(spaceIdMap, adminProfileId);
   await seedResourcesData(spaceIdMap, adminProfileId);
+  await seedMessagesData(profileIdMap);
 
   console.log("\n" + "═".repeat(50));
   console.log("✨ Seeding complete!");

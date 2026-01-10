@@ -39,3 +39,12 @@ export {
   getResourcesForSpace,
 } from "./resources";
 export type { SeedResource } from "./resources";
+
+// Messages
+export {
+  seedConversations,
+  getAllParticipantEmails,
+  getMessageContent,
+  getMessageTimestamp,
+} from "./messages";
+export type { SeedConversation, SeedMessage } from "./messages";
