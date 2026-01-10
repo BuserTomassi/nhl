@@ -3,7 +3,9 @@
  * Add hooks here as needed for the platform
  */
 
-// Placeholder - hooks will be added as platform features are built
+export { useSidebar } from "./use-sidebar";
+
+// Placeholder - more hooks will be added as platform features are built
 // Examples:
 // export { useAuth } from "./use-auth";
 // export { useProfile } from "./use-profile";
