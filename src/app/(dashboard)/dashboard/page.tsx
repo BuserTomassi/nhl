@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { TierBadge } from "@/components/dashboard/tier-badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import {
   MessageSquare,
@@ -11,7 +12,12 @@ import {
   BookOpen,
   ArrowRight,
   Sparkles,
+  Clock,
+  MapPin,
+  Video,
 } from "lucide-react";
+import { getUpcomingEvents } from "@/lib/actions/events";
+import { format, formatDistanceToNow } from "date-fns";
 
 export const dynamic = "force-dynamic";
 
@@ -40,6 +46,25 @@ export default async function DashboardPage() {
   if (!profile.onboarding_completed) {
     redirect("/dashboard/onboarding");
   }
+
+  // Fetch recent activity (posts from all accessible spaces)
+  const { data: recentActivity } = await supabase
+    .from("posts")
+    .select(
+      `
+      id,
+      title,
+      content_text,
+      created_at,
+      author:profiles!posts_author_id_fkey(id, full_name, avatar_url),
+      space:spaces!posts_space_id_fkey(id, name, slug)
+    `
+    )
+    .order("created_at", { ascending: false })
+    .limit(5);
+
+  // Fetch upcoming events (limit to 3 for the dashboard)
+  const { data: upcomingEvents } = await getUpcomingEvents(3);
 
   const greeting = getGreeting();
 
