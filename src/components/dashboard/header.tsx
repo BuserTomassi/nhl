@@ -1,10 +1,18 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Logo } from "@/components/layout/logo";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/theme-toggle";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import type { Profile } from "@/lib/supabase/types";
 import {
   Bell,
@@ -14,17 +22,39 @@ import {
   LogOut,
   User,
   Settings,
+  LayoutDashboard,
+  Users,
+  Building2,
+  Calendar,
+  BookOpen,
+  FolderOpen,
+  GraduationCap,
 } from "lucide-react";
 import { useState } from "react";
 import { signOut } from "@/lib/actions/auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { cn } from "@/lib/utils";
 
 interface DashboardHeaderProps {
   profile: Profile;
 }
 
+// Navigation items for mobile sidebar
+const mobileNavItems = [
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/spaces", label: "Spaces", icon: FolderOpen },
+  { href: "/events", label: "Events", icon: Calendar },
+  { href: "/members", label: "Members", icon: Users },
+  { href: "/messages", label: "Messages", icon: MessageCircle },
+  { href: "/partners", label: "Partners", icon: Building2 },
+  { href: "/resources", label: "Resources", icon: BookOpen },
+  { href: "/cohorts", label: "Cohorts", icon: GraduationCap, tiers: ["platinum", "diamond"] },
+];
+
 export function DashboardHeader({ profile }: DashboardHeaderProps) {
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const pathname = usePathname();
 
   const initials = profile.full_name
     ? profile.full_name
@@ -35,14 +65,99 @@ export function DashboardHeader({ profile }: DashboardHeaderProps) {
         .slice(0, 2)
     : profile.email?.[0]?.toUpperCase() ?? "?";
 
+  // Filter nav items based on tier
+  const filteredNavItems = mobileNavItems.filter((item) => {
+    if (!item.tiers) return true;
+    return item.tiers.includes(profile.tier);
+  });
+
   return (
     <header className="sticky top-0 z-50 h-16 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-full items-center justify-between px-4 lg:px-6">
         {/* Left side - Logo & Mobile menu */}
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Toggle menu">
-            <Menu className="h-5 w-5" />
-          </Button>
+          {/* Mobile sidebar sheet */}
+          <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Toggle menu">
+                <Menu className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-[280px] p-0">
+              <SheetHeader className="p-4 border-b">
+                <SheetTitle className="flex items-center gap-2">
+                  <Logo size="sm" showText={false} />
+                  <span className="font-semibold">Next Horizon</span>
+                </SheetTitle>
+              </SheetHeader>
+
+              {/* User info */}
+              <div className="p-4 border-b">
+                <div className="flex items-center gap-3">
+                  <Avatar className="h-10 w-10">
+                    <AvatarImage src={profile.avatar_url || undefined} />
+                    <AvatarFallback className="bg-primary/10 text-primary">
+                      {initials}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-medium text-sm truncate">
+                      {profile.full_name || "Member"}
+                    </p>
+                    <Badge variant={profile.tier} className="capitalize text-xs">
+                      {profile.tier}
+                    </Badge>
+                  </div>
+                </div>
+              </div>
+
+              {/* Navigation */}
+              <nav className="p-2">
+                {filteredNavItems.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setMobileNavOpen(false)}
+                      className={cn(
+                        "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                        isActive
+                          ? "bg-primary/10 text-primary"
+                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                      )}
+                    >
+                      <Icon className="h-5 w-5" />
+                      {item.label}
+                    </Link>
+                  );
+                })}
+              </nav>
+
+              {/* Settings & Sign out */}
+              <div className="absolute bottom-0 left-0 right-0 p-4 border-t bg-background">
+                <Link
+                  href="/settings"
+                  onClick={() => setMobileNavOpen(false)}
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                >
+                  <Settings className="h-5 w-5" />
+                  Settings
+                </Link>
+                <form action={signOut}>
+                  <button
+                    type="submit"
+                    className="flex w-full items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors"
+                  >
+                    <LogOut className="h-5 w-5" />
+                    Sign out
+                  </button>
+                </form>
+              </div>
+            </SheetContent>
+          </Sheet>
+
           <div className="flex items-center gap-2">
             <Logo size="sm" />
             <Badge variant={profile.tier} className="hidden sm:inline-flex capitalize">

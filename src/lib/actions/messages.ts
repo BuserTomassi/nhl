@@ -171,33 +171,41 @@ export async function sendMessage(
   } = await supabase.auth.getUser();
 
   if (!user) {
+    console.log("[sendMessage] No user");
     return { success: false, error: "Not authenticated" };
   }
 
+  console.log("[sendMessage] User:", user.id, "Conv:", conversationId);
+
   // Verify user is in conversation
-  const { data: participation } = await supabase
+  const { data: participation, error: partError } = await supabase
     .from("conversation_participants")
     .select("id")
     .eq("conversation_id", conversationId)
     .eq("profile_id", user.id)
     .single();
 
+  console.log("[sendMessage] Participation:", participation, "Error:", partError);
+
   if (!participation) {
     return { success: false, error: "Not authorized" };
   }
 
-  const { error } = await supabase.from("messages").insert({
+  const { data: insertedMsg, error } = await supabase.from("messages").insert({
     conversation_id: conversationId,
     sender_id: user.id,
     content,
     content_text: contentText,
-  });
+  }).select();
+
+  console.log("[sendMessage] Inserted:", insertedMsg, "Error:", error);
 
   if (error) {
     return { success: false, error: error.message };
   }
 
   revalidatePath("/messages");
+  revalidatePath(`/messages/${conversationId}`);
 
   return { success: true };
 }
