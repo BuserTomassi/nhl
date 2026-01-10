@@ -2,9 +2,24 @@ import { createClient } from "@/lib/supabase/server";
 export const dynamic = "force-dynamic";
 import { MemberCard } from "@/components/members/member-card";
 import { MemberFilters } from "@/components/members/member-filters";
-import { PageHeader } from "@/components/marketing/page-header";
+import { DashboardPageHeader } from "@/components/dashboard";
 import type { MembershipTier } from "@/lib/supabase/types";
 import { Users } from "lucide-react";
+
+/**
+ * Sanitize search input to prevent Supabase filter injection.
+ * Escapes characters that could be used to inject filter operators.
+ */
+function sanitizeSearchInput(input: string): string {
+  // Remove/escape characters that could inject filter operators:
+  // . (operator separator), , (condition separator), ( ) (grouping)
+  // Also limit length to prevent abuse
+  return input
+    .replace(/[.,()]/g, " ") // Replace filter operators with spaces
+    .replace(/\s+/g, " ")    // Normalize whitespace
+    .trim()
+    .slice(0, 100);          // Limit length
+}
 
 interface MembersPageProps {
   searchParams: Promise<{
@@ -30,18 +45,21 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
     query = query.eq("tier", params.tier);
   }
 
-  // Apply search filter
+  // Apply search filter with sanitized input
   if (params.search) {
-    query = query.or(
-      `full_name.ilike.%${params.search}%,company.ilike.%${params.search}%,title.ilike.%${params.search}%`
-    );
+    const sanitizedSearch = sanitizeSearchInput(params.search);
+    if (sanitizedSearch) {
+      query = query.or(
+        `full_name.ilike.%${sanitizedSearch}%,company.ilike.%${sanitizedSearch}%,title.ilike.%${sanitizedSearch}%`
+      );
+    }
   }
 
   const { data: members } = await query.limit(100);
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
-      <PageHeader
+      <DashboardPageHeader
         title="Member Directory"
         description="Connect with fellow leaders, CHROs, and talent executives in our community."
       />
