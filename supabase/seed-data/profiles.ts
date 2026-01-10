@@ -20,6 +20,14 @@ export interface SeedProfile {
   onboarding_completed: boolean;
 }
 
+/**
+ * Generate a Pravatar URL for a profile
+ * Uses email as seed for deterministic avatar generation
+ */
+export function getAvatarUrl(email: string, size: number = 150): string {
+  return `https://i.pravatar.cc/${size}?u=${encodeURIComponent(email)}`;
+}
+
 export const seedProfiles: SeedProfile[] = [
   // Admin users
   {

@@ -29,6 +29,7 @@ import {
   seedPosts,
   seedEvents,
   seedResources,
+  getAvatarUrl,
 } from "./seed-data";
 
 import type { Database } from "../src/lib/supabase/database.types";
@@ -178,6 +179,7 @@ async function seedProfilesData(): Promise<Map<string, string>> {
         .from("profiles")
         .update({
           full_name: profile.full_name,
+          avatar_url: getAvatarUrl(profile.email),
           company: profile.company,
           title: profile.title,
           bio: profile.bio,

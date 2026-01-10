@@ -5,7 +5,7 @@
  */
 
 // Profiles
-export { seedProfiles, getProfilesByTier, getAdminProfiles, getPartnerProfiles } from "./profiles";
+export { seedProfiles, getProfilesByTier, getAdminProfiles, getPartnerProfiles, getAvatarUrl } from "./profiles";
 export type { SeedProfile } from "./profiles";
 
 // Partners
