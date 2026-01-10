@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useTransition } from "react";
+import { useState, useEffect, useRef, useTransition, useMemo } from "react";
 import { sendMessage } from "@/lib/actions/messages";
 import { createClient } from "@/lib/supabase/client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -33,7 +33,8 @@ export function MessageThread({
   const [newMessage, setNewMessage] = useState("");
   const [isPending, startTransition] = useTransition();
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const supabase = createClient();
+  // Memoize the Supabase client to prevent creating new instances on every render
+  const supabase = useMemo(() => createClient(), []);
 
   // Scroll to bottom on new messages
   useEffect(() => {
@@ -75,7 +76,7 @@ export function MessageThread({
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [conversationId, supabase]);
+  }, [conversationId, supabase]); // supabase is memoized, so this only re-runs when conversationId changes
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();

@@ -32,54 +32,43 @@ export async function getConversations() {
     return [];
   }
 
-  // Get conversations the user is part of
-  const { data: participations } = await supabase
-    .from("conversation_participants")
-    .select("conversation_id")
-    .eq("profile_id", user.id);
+  // Use SECURITY DEFINER function to get conversations with participant details
+  const { data, error } = await supabase.rpc("get_user_conversations");
 
-  if (!participations || participations.length === 0) {
+  if (error) {
+    console.error("[getConversations] Error:", error);
     return [];
   }
 
-  const conversationIds = participations.map((p) => p.conversation_id);
-
-  // Get conversations with other participants and last message
-  const { data: conversations } = await supabase
-    .from("conversations")
-    .select(
-      `
-      *,
-      participants:conversation_participants(
-        profile:profiles(id, full_name, avatar_url, tier)
-      ),
-      messages(id, content_text, created_at, sender_id)
-    `
-    )
-    .in("id", conversationIds)
-    .order("updated_at", { ascending: false });
-
-  // Transform to include other participant and last message
+  // Transform to match expected format
   return (
-    conversations?.map((conv) => {
-      const otherParticipant = conv.participants.find(
-        (p: { profile: { id: string } }) => p.profile.id !== user.id
-      );
-      const lastMessage = conv.messages?.[conv.messages.length - 1];
-
-      return {
-        id: conv.id,
-        updatedAt: conv.updated_at,
-        otherUser: otherParticipant?.profile || null,
-        lastMessage: lastMessage
-          ? {
-              text: lastMessage.content_text,
-              createdAt: lastMessage.created_at,
-              isFromMe: lastMessage.sender_id === user.id,
-            }
-          : null,
-      };
-    }) || []
+    data?.map((conv: {
+      conversation_id: string;
+      updated_at: string;
+      other_user_id: string;
+      other_user_name: string | null;
+      other_user_avatar: string | null;
+      other_user_tier: string | null;
+      last_message_text: string | null;
+      last_message_at: string | null;
+      last_message_is_mine: boolean | null;
+    }) => ({
+      id: conv.conversation_id,
+      updatedAt: conv.updated_at,
+      otherUser: {
+        id: conv.other_user_id,
+        full_name: conv.other_user_name,
+        avatar_url: conv.other_user_avatar,
+        tier: conv.other_user_tier,
+      },
+      lastMessage: conv.last_message_text
+        ? {
+            text: conv.last_message_text,
+            createdAt: conv.last_message_at,
+            isFromMe: conv.last_message_is_mine,
+          }
+        : null,
+    })) || []
   );
 }
 
@@ -224,32 +213,40 @@ export async function getConversation(conversationId: string) {
   } = await supabase.auth.getUser();
 
   if (!user) {
+    console.log("[getConversation] No user");
     return null;
   }
 
-  const { data } = await supabase
-    .from("conversations")
-    .select(
-      `
-      *,
-      participants:conversation_participants(
-        profile:profiles(id, full_name, avatar_url, tier, title, company)
-      )
-    `
-    )
-    .eq("id", conversationId)
-    .single();
+  // Use SECURITY DEFINER function to get conversation with participant details
+  const { data, error } = await supabase.rpc("get_conversation_details", {
+    conv_id: conversationId,
+  });
 
-  if (!data) {
+  console.log("[getConversation] conv_id:", conversationId, "data:", data, "error:", error);
+
+  if (error || !data || data.length === 0) {
     return null;
   }
 
-  const otherParticipant = data.participants.find(
-    (p: { profile: { id: string } }) => p.profile.id !== user.id
-  );
+  const conv = data[0] as {
+    conversation_id: string;
+    other_user_id: string;
+    other_user_name: string | null;
+    other_user_avatar: string | null;
+    other_user_tier: string | null;
+    other_user_title: string | null;
+    other_user_company: string | null;
+  };
 
   return {
-    id: data.id,
-    otherUser: otherParticipant?.profile || null,
+    id: conv.conversation_id,
+    otherUser: {
+      id: conv.other_user_id,
+      full_name: conv.other_user_name,
+      avatar_url: conv.other_user_avatar,
+      tier: conv.other_user_tier,
+      title: conv.other_user_title,
+      company: conv.other_user_company,
+    },
   };
 }
