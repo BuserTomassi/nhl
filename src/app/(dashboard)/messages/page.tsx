@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import { createClient } from "@/lib/supabase/server";
 import { getConversations, getOrCreateConversation } from "@/lib/actions/messages";
 import { ConversationList } from "@/components/messages/conversation-list";
-import { PageHeader } from "@/components/marketing/page-header";
+import { DashboardPageHeader } from "@/components/dashboard";
 import { MessageCircle } from "lucide-react";
 
 interface MessagesPageProps {
@@ -35,7 +35,7 @@ export default async function MessagesPage({ searchParams }: MessagesPageProps) 
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      <PageHeader
+      <DashboardPageHeader
         title="Messages"
         description="Private conversations with other members"
       />

@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 export const dynamic = "force-dynamic";
 import { ResourceCard } from "@/components/resources/resource-card";
-import { PageHeader } from "@/components/marketing/page-header";
+import { DashboardPageHeader } from "@/components/dashboard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen } from "lucide-react";
 import type { ResourceType } from "@/lib/supabase/types";
@@ -39,7 +39,7 @@ export default async function ResourcesPage({ searchParams }: ResourcesPageProps
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
-      <PageHeader
+      <DashboardPageHeader
         title="Resource Library"
         description="Access exclusive content, templates, and learning materials curated for leaders."
       />

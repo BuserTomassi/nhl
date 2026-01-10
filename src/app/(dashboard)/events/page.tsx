@@ -1,7 +1,7 @@
 import { getUpcomingEvents, getPastEvents } from "@/lib/actions/events";
 export const dynamic = "force-dynamic";
 import { EventCard } from "@/components/events/event-card";
-import { PageHeader } from "@/components/marketing/page-header";
+import { DashboardPageHeader } from "@/components/dashboard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Calendar } from "lucide-react";
 
@@ -13,7 +13,7 @@ export default async function EventsPage() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
-      <PageHeader
+      <DashboardPageHeader
         title="Events"
         description="Join exclusive gatherings, roundtables, and learning sessions with fellow leaders."
       />

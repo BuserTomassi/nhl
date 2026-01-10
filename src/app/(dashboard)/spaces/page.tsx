@@ -1,9 +1,9 @@
 import { createClient } from "@/lib/supabase/server";
 import { SpaceCard } from "@/components/spaces/space-card";
+import { DashboardPageHeader } from "@/components/dashboard";
+import { MessageSquare } from "lucide-react";
 
 export const dynamic = "force-dynamic";
-import { PageHeader } from "@/components/marketing/page-header";
-import { MessageSquare } from "lucide-react";
 
 export default async function SpacesPage() {
   const supabase = await createClient();
@@ -35,7 +35,7 @@ export default async function SpacesPage() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
-      <PageHeader
+      <DashboardPageHeader
         title="Spaces"
         description="Join discussions with peers, share insights, and connect with leaders in your field."
       />

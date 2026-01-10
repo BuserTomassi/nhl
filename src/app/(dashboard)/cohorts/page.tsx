@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { CohortCard } from "@/components/cohorts/cohort-card";
-import { PageHeader } from "@/components/marketing/page-header";
+import { DashboardPageHeader } from "@/components/dashboard";
 import { GraduationCap } from "lucide-react";
 
 export default async function CohortsPage() {
@@ -61,7 +61,7 @@ export default async function CohortsPage() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
-      <PageHeader
+      <DashboardPageHeader
         title="Learning Cohorts"
         description="Join structured learning programs with peer leaders and expert facilitators."
       />
