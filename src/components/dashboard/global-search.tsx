@@ -164,7 +164,7 @@ export function GlobalSearch() {
           }}
           onFocus={() => setIsOpen(true)}
           onKeyDown={handleKeyDown}
-          className="w-64 pl-9 pr-8 h-9 bg-muted/50 border-transparent focus:border-primary focus:bg-background transition-colors"
+          className="w-96 pl-9 pr-8 h-9 bg-muted/50 border-transparent focus:border-primary focus:bg-background transition-colors"
         />
         {query && (
           <button
