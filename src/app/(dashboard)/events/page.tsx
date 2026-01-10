@@ -1,14 +1,20 @@
 import { getUpcomingEvents, getPastEvents } from "@/lib/actions/events";
 export const dynamic = "force-dynamic";
-import { EventCard } from "@/components/events/event-card";
+import { EventCard, EventFilters } from "@/components/events";
 import { DashboardPageHeader } from "@/components/dashboard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Calendar } from "lucide-react";
 
-export default async function EventsPage() {
+interface EventsPageProps {
+  searchParams: Promise<{ search?: string }>;
+}
+
+export default async function EventsPage({ searchParams }: EventsPageProps) {
+  const { search } = await searchParams;
+
   const [{ data: upcomingEvents }, { data: pastEvents }] = await Promise.all([
-    getUpcomingEvents(),
-    getPastEvents(10),
+    getUpcomingEvents(20, search),
+    getPastEvents(10, search),
   ]);
 
   return (
@@ -18,17 +24,20 @@ export default async function EventsPage() {
         description="Join exclusive gatherings, roundtables, and learning sessions with fellow leaders."
       />
 
+      {/* Search */}
+      <EventFilters currentSearch={search} />
+
       <Tabs defaultValue="upcoming" className="w-full">
         <TabsList>
           <TabsTrigger value="upcoming">
             Upcoming ({upcomingEvents.length})
           </TabsTrigger>
-          <TabsTrigger value="past">Past Events</TabsTrigger>
+          <TabsTrigger value="past">Past Events ({pastEvents.length})</TabsTrigger>
         </TabsList>
 
         <TabsContent value="upcoming" className="mt-6">
           {upcomingEvents.length === 0 ? (
-            <EmptyState message="No upcoming events scheduled" />
+            <EmptyState message={search ? `No upcoming events matching "${search}"` : "No upcoming events scheduled"} />
           ) : (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {upcomingEvents.map((event) => (
@@ -40,7 +49,7 @@ export default async function EventsPage() {
 
         <TabsContent value="past" className="mt-6">
           {pastEvents.length === 0 ? (
-            <EmptyState message="No past events" />
+            <EmptyState message={search ? `No past events matching "${search}"` : "No past events"} />
           ) : (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {pastEvents.map((event) => (

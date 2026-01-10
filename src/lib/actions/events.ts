@@ -20,10 +20,10 @@ export interface EventResult {
 /**
  * Get upcoming events
  */
-export async function getUpcomingEvents(limit = 20) {
+export async function getUpcomingEvents(limit = 20, search?: string) {
   const supabase = await createClient();
 
-  const { data, error } = await supabase
+  let query = supabase
     .from("events")
     .select(
       `
@@ -33,7 +33,14 @@ export async function getUpcomingEvents(limit = 20) {
     `
     )
     .eq("is_published", true)
-    .gte("starts_at", new Date().toISOString())
+    .gte("starts_at", new Date().toISOString());
+
+  // Apply search filter
+  if (search) {
+    query = query.or(`title.ilike.%${search}%,description.ilike.%${search}%`);
+  }
+
+  const { data, error } = await query
     .order("starts_at", { ascending: true })
     .limit(limit);
 
@@ -47,10 +54,10 @@ export async function getUpcomingEvents(limit = 20) {
 /**
  * Get past events
  */
-export async function getPastEvents(limit = 20) {
+export async function getPastEvents(limit = 20, search?: string) {
   const supabase = await createClient();
 
-  const { data, error } = await supabase
+  let query = supabase
     .from("events")
     .select(
       `
@@ -59,7 +66,14 @@ export async function getPastEvents(limit = 20) {
     `
     )
     .eq("is_published", true)
-    .lt("starts_at", new Date().toISOString())
+    .lt("starts_at", new Date().toISOString());
+
+  // Apply search filter
+  if (search) {
+    query = query.or(`title.ilike.%${search}%,description.ilike.%${search}%`);
+  }
+
+  const { data, error } = await query
     .order("starts_at", { ascending: false })
     .limit(limit);
 
