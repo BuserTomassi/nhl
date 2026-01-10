@@ -3,6 +3,21 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { SITE_CONFIG } from "@/lib/constants";
+
+// Get the base URL for auth redirects
+function getBaseUrl() {
+  // Use environment variable if set
+  if (process.env.NEXT_PUBLIC_SITE_URL) {
+    return process.env.NEXT_PUBLIC_SITE_URL;
+  }
+  // Vercel provides this automatically
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+  // Fallback to site config or localhost
+  return SITE_CONFIG.url || "http://localhost:3000";
+}
 
 // ============================================================================
 // SCHEMAS
@@ -56,7 +71,7 @@ export async function signInWithMagicLink(
   const { error } = await supabase.auth.signInWithOtp({
     email: parsed.data,
     options: {
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/auth/callback?redirectTo=${encodeURIComponent(redirectTo)}`,
+      emailRedirectTo: `${getBaseUrl()}/auth/callback?redirectTo=${encodeURIComponent(redirectTo)}`,
     },
   });
 
@@ -183,7 +198,7 @@ export async function signUpWithInvite(
   const { error } = await supabase.auth.signInWithOtp({
     email: parsed.data.email,
     options: {
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/auth/callback?redirectTo=/dashboard/onboarding`,
+      emailRedirectTo: `${getBaseUrl()}/auth/callback?redirectTo=/dashboard/onboarding`,
       data: {
         full_name: fullName,
         company: company || null,
