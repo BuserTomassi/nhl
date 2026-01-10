@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Search, Sparkles, LayoutGrid, Users } from "lucide-react";
-import { Header, Footer } from "@/components/layout";
+import { HeaderWrapper } from "@/components/layout/header-wrapper";
+import { Footer } from "@/components/layout";
 import { PageHeader } from "@/components/marketing";
 import { StaggerChildren, StaggerItem } from "@/components/motion";
 import {
@@ -52,7 +53,7 @@ export default function ServicesPage() {
     <div className="min-h-screen bg-background text-foreground">
       <ServiceSchema services={serviceItems} />
       <BreadcrumbSchema items={breadcrumbs} />
-      <Header />
+      <HeaderWrapper />
       <main>
         <PageHeader
           title="Executive Search And Advisory Services"

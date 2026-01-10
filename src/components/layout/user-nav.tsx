@@ -21,13 +21,14 @@ import { cn } from "@/lib/utils";
 
 interface UserNavProps {
   className?: string;
+  initialProfile?: Profile | null;
 }
 
-export function UserNav({ className }: UserNavProps) {
+export function UserNav({ className, initialProfile }: UserNavProps) {
   const router = useRouter();
   const [user, setUser] = useState<SupabaseUser | null>(null);
-  const [profile, setProfile] = useState<Profile | null>(null);
-  const [isLoading, setIsLoading] = useState(false); // Start with false to show Sign In immediately
+  const [profile, setProfile] = useState<Profile | null>(initialProfile ?? null);
+  const [isLoading, setIsLoading] = useState(!initialProfile); // Only loading if no initial profile
   
   // Memoize the supabase client to prevent recreation on every render
   const supabase = useMemo(() => createClient(), []);
@@ -39,8 +40,8 @@ export function UserNav({ className }: UserNavProps) {
         const { data: { user } } = await supabase.auth.getUser();
         setUser(user);
 
-        if (user) {
-          // Fetch profile
+        // Only fetch profile if we don't have an initial one
+        if (user && !initialProfile) {
           const { data: profile } = await supabase
             .from("profiles")
             .select("*")
@@ -78,7 +79,7 @@ export function UserNav({ className }: UserNavProps) {
     return () => {
       subscription.unsubscribe();
     };
-  }, [supabase]);
+  }, [supabase, initialProfile]);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();

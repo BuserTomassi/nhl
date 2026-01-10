@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Mail, MapPin, Clock } from "lucide-react";
-import { Header, Footer } from "@/components/layout";
+import { HeaderWrapper } from "@/components/layout/header-wrapper";
+import { Footer } from "@/components/layout";
 import { PageHeader, SectionHeading } from "@/components/marketing";
 import { ContactForm } from "@/components/forms";
 import { FadeIn } from "@/components/motion";
@@ -53,7 +54,7 @@ export default function ContactPage() {
     <div className="min-h-screen bg-background text-foreground">
       <ContactPageSchema />
       <BreadcrumbSchema items={breadcrumbs} />
-      <Header />
+      <HeaderWrapper />
       <main id="main-content">
         <PageHeader
           title="Contact Us"

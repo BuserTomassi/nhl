@@ -3,7 +3,7 @@
 import { Menu, ArrowRight, LogIn, LogOut, LayoutDashboard, User, Settings } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -20,20 +20,25 @@ import { createClient } from "@/lib/supabase/client";
 import type { Profile } from "@/lib/supabase/types";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 
-export function MobileNav() {
+interface MobileNavProps {
+  initialProfile?: Profile | null;
+}
+
+export function MobileNav({ initialProfile }: MobileNavProps) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const [user, setUser] = useState<SupabaseUser | null>(null);
-  const [profile, setProfile] = useState<Profile | null>(null);
-  const supabase = createClient();
+  const [profile, setProfile] = useState<Profile | null>(initialProfile ?? null);
+  const supabase = useMemo(() => createClient(), []);
 
   useEffect(() => {
     const getSession = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       setUser(user);
 
-      if (user) {
+      // Only fetch profile if we don't have an initial one
+      if (user && !initialProfile) {
         const { data: profile } = await supabase
           .from("profiles")
           .select("*")
@@ -65,7 +70,7 @@ export function MobileNav() {
     return () => {
       subscription.unsubscribe();
     };
-  }, [supabase]);
+  }, [supabase, initialProfile]);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();

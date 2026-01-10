@@ -1,5 +1,6 @@
 import { Suspense } from "react";
-import { Header, Footer } from "@/components/layout";
+import { HeaderWrapper } from "@/components/layout/header-wrapper";
+import { Footer } from "@/components/layout";
 import {
   Hero,
   LogoMarquee,
@@ -29,7 +30,7 @@ function LogoMarqueeFallback() {
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Header />
+      <HeaderWrapper />
       <main id="main-content">
         <Suspense fallback={<SkeletonHero />}>
           <Hero />

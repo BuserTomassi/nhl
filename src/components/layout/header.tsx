@@ -10,8 +10,13 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { navigationLinks } from "@/data/navigation";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import type { Profile } from "@/lib/supabase/types";
 
-export function Header() {
+interface HeaderProps {
+  initialProfile?: Profile | null;
+}
+
+export function Header({ initialProfile }: HeaderProps) {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
@@ -112,7 +117,7 @@ export function Header() {
 
           {/* Right side: User nav + Theme toggle */}
           <div className="hidden md:flex items-center gap-3">
-            <UserNav />
+            <UserNav initialProfile={initialProfile} />
             <div className="h-6 w-px bg-border" />
             <ThemeToggle />
           </div>
@@ -120,7 +125,7 @@ export function Header() {
           {/* Mobile navigation */}
           <div className="flex items-center gap-2 md:hidden">
             <ThemeToggle />
-            <MobileNav />
+            <MobileNav initialProfile={initialProfile} />
           </div>
 
           {/* Glow effect on scroll */}

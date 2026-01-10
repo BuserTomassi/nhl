@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Crown, Gem, Medal, Award, Check } from "lucide-react";
-import { Header, Footer } from "@/components/layout";
+import { HeaderWrapper } from "@/components/layout/header-wrapper";
+import { Footer } from "@/components/layout";
 import { PageHeader } from "@/components/marketing";
 import { StaggerChildren, StaggerItem, FadeIn } from "@/components/motion";
 import {
@@ -101,7 +102,7 @@ export default function CommunityPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <BreadcrumbSchema items={breadcrumbs} />
-      <Header />
+      <HeaderWrapper />
       <main>
         <PageHeader
           title="Community Portal"

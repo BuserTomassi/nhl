@@ -5,7 +5,8 @@ import {
   Download,
   MessageSquareQuote,
 } from "lucide-react";
-import { Header, Footer } from "@/components/layout";
+import { HeaderWrapper } from "@/components/layout/header-wrapper";
+import { Footer } from "@/components/layout";
 import { PageHeader, SectionHeading } from "@/components/marketing";
 import { StaggerChildren, StaggerItem, FadeIn } from "@/components/motion";
 import { Button } from "@/components/ui/button";
@@ -73,7 +74,7 @@ export default function InsightsPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <BreadcrumbSchema items={breadcrumbs} />
-      <Header />
+      <HeaderWrapper />
       <main>
         <PageHeader
           title="Insights"

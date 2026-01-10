@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Header, Footer } from "@/components/layout";
+import { HeaderWrapper } from "@/components/layout/header-wrapper";
+import { Footer } from "@/components/layout";
 import { PageHeader } from "@/components/marketing";
 import { BreadcrumbSchema } from "@/components/seo";
 
@@ -29,7 +30,7 @@ export default function TermsPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <BreadcrumbSchema items={breadcrumbs} />
-      <Header />
+      <HeaderWrapper />
       <main>
         <PageHeader
           title="Terms of Service"
