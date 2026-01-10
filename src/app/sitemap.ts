@@ -22,22 +22,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
-      url: `${SITE_CONFIG.url}/events`,
-      lastModified: new Date(),
-      changeFrequency: "weekly" as const,
-      priority: 0.8,
-    },
-    {
       url: `${SITE_CONFIG.url}/insights`,
       lastModified: new Date(),
       changeFrequency: "weekly" as const,
       priority: 0.8,
-    },
-    {
-      url: `${SITE_CONFIG.url}/partners`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
     },
     {
       url: `${SITE_CONFIG.url}/contact`,
