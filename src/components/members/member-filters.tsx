@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { MembershipTier } from "@/lib/supabase/types";
 import { Search, X } from "lucide-react";
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect, useRef, useCallback } from "react";
 
 interface MemberFiltersProps {
   currentTier?: MembershipTier;
@@ -28,8 +28,9 @@ export function MemberFilters({
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
   const [searchValue, setSearchValue] = useState(currentSearch || "");
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const updateFilters = (tier?: MembershipTier | "all", search?: string) => {
+  const updateFilters = useCallback((tier?: MembershipTier | "all", search?: string) => {
     const params = new URLSearchParams(searchParams);
 
     if (tier && tier !== "all") {
@@ -47,15 +48,30 @@ export function MemberFilters({
     startTransition(() => {
       router.push(`/members?${params.toString()}`);
     });
-  };
+  }, [router, searchParams]);
+
+  // Auto-filter with debounce as user types
+  useEffect(() => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+
+    debounceRef.current = setTimeout(() => {
+      // Only update if the value has actually changed from URL
+      if (searchValue !== (currentSearch || "")) {
+        updateFilters(currentTier, searchValue);
+      }
+    }, 300);
+
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+    };
+  }, [searchValue, currentTier, currentSearch, updateFilters]);
 
   const handleTierClick = (tier: MembershipTier | "all") => {
     updateFilters(tier, searchValue);
-  };
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    updateFilters(currentTier, searchValue);
   };
 
   const clearSearch = () => {
@@ -66,10 +82,10 @@ export function MemberFilters({
   return (
     <div className="space-y-4">
       {/* Search */}
-      <form onSubmit={handleSearch} className="relative max-w-md">
+      <div className="relative max-w-md">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
-          type="search"
+          type="text"
           placeholder="Search members..."
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
@@ -80,11 +96,12 @@ export function MemberFilters({
             type="button"
             onClick={clearSearch}
             className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            aria-label="Clear search"
           >
             <X className="h-4 w-4" />
           </button>
         )}
-      </form>
+      </div>
 
       {/* Tier filters */}
       <div className="flex flex-wrap gap-2">

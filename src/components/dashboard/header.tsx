@@ -79,9 +79,9 @@ export function DashboardHeader({ profile }: DashboardHeaderProps) {
           {/* Mobile sidebar sheet */}
           <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Toggle menu">
-                <Menu className="h-5 w-5" />
-              </Button>
+          <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Toggle menu">
+            <Menu className="h-5 w-5" />
+          </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-[280px] p-0">
               <SheetHeader className="p-4 border-b">
