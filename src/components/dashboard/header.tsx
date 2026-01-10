@@ -6,6 +6,7 @@ import { Logo } from "@/components/layout/logo";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { GlobalSearch } from "./global-search";
 import {
   Sheet,
   SheetContent,
@@ -165,6 +166,9 @@ export function DashboardHeader({ profile }: DashboardHeaderProps) {
             </Badge>
           </div>
         </div>
+
+        {/* Center - Global Search */}
+        <GlobalSearch />
 
         {/* Right side - Actions & User */}
         <div className="flex items-center gap-2">
