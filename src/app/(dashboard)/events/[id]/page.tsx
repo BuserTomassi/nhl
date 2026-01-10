@@ -37,8 +37,9 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
   const startDate = new Date(event.starts_at);
   const endDate = event.ends_at ? new Date(event.ends_at) : null;
   const isPast = startDate < new Date();
+  const attendeeCount = event.attendee_count ?? 0;
   const isFull = event.max_attendees
-    ? event.attendee_count >= event.max_attendees
+    ? attendeeCount >= event.max_attendees
     : false;
 
   return (
@@ -199,10 +200,10 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                     <Users className="h-5 w-5 text-muted-foreground shrink-0 mt-0.5" />
                     <div>
                       <p className="font-medium">
-                        {event.attendee_count} / {event.max_attendees} spots
+                        {attendeeCount} / {event.max_attendees} spots
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        {event.max_attendees - event.attendee_count} remaining
+                        {event.max_attendees - attendeeCount} remaining
                       </p>
                     </div>
                   </div>
