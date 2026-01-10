@@ -15,13 +15,14 @@ export default async function OnboardingPage() {
     redirect("/auth/login");
   }
 
-  const { data: profile } = await supabase
+  const { data: profile, error } = await supabase
     .from("profiles")
     .select("*")
     .eq("id", user.id)
     .single();
 
-  if (!profile) {
+  // Handle missing profile (error or null data)
+  if (error || !profile) {
     redirect("/auth/login");
   }
 
