@@ -55,6 +55,7 @@ export function TiptapEditor({
     ],
     content,
     editable,
+    immediatelyRender: false,
     editorProps: {
       attributes: {
         class: cn(
@@ -237,6 +238,7 @@ export function TiptapContent({
     ],
     content: content as string,
     editable: false,
+    immediatelyRender: false,
     editorProps: {
       attributes: {
         class: cn(
