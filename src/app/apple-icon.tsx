@@ -7,7 +7,7 @@ export const size = {
 };
 export const contentType = "image/png";
 
-// Image generation - Creates a stylized "horizon" icon matching the brand
+// Image generation - Creates a stylized "N" icon matching the Next Horizon brand
 export default function AppleIcon() {
   return new ImageResponse(
     (
@@ -22,36 +22,42 @@ export default function AppleIcon() {
           borderRadius: "32px",
         }}
       >
-        {/* Stylized horizon with rising sun/arrow representing forward movement */}
+        {/* Stylized "N" logo for Next Horizon */}
         <svg
           width="120"
-          height="120"
-          viewBox="0 0 24 24"
+          height="130"
+          viewBox="0 0 24 26"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          {/* Horizon line */}
+          {/* N shape with gradient effect */}
+          <defs>
+            <linearGradient id="nGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#38bdf8" />
+              <stop offset="50%" stopColor="#0ea5e9" />
+              <stop offset="100%" stopColor="#0284c7" />
+            </linearGradient>
+          </defs>
+          {/* Left vertical stroke */}
           <path
-            d="M2 16h20"
-            stroke="#22d3ee"
-            strokeWidth="1.5"
+            d="M4 22V4"
+            stroke="url(#nGradient)"
+            strokeWidth="3.5"
             strokeLinecap="round"
           />
-          {/* Rising arc/sun above horizon */}
+          {/* Diagonal stroke */}
           <path
-            d="M6 16c0-3.314 2.686-6 6-6s6 2.686 6 6"
-            stroke="#06b6d4"
-            strokeWidth="1.5"
+            d="M4 4L20 22"
+            stroke="url(#nGradient)"
+            strokeWidth="3.5"
             strokeLinecap="round"
-            fill="none"
           />
-          {/* Upward arrow/peak representing growth/leadership */}
+          {/* Right vertical stroke */}
           <path
-            d="M12 4v6M9 7l3-3 3 3"
-            stroke="#0ea5e9"
-            strokeWidth="1.5"
+            d="M20 4V22"
+            stroke="url(#nGradient)"
+            strokeWidth="3.5"
             strokeLinecap="round"
-            strokeLinejoin="round"
           />
         </svg>
       </div>
